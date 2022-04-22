@@ -9,18 +9,42 @@ public:
     static void run(BeatInfo beatInfo, CRGBSet leds, int numLeds)
     {
 
-        EVERY_N_MILLIS(10)
-        {
-        
-            leds.fadeToBlackBy(20);
-        };
+        leds = CRGB::Black;
 
-        leds[map(beatInfo.animationFrame(1), 0, 1000, 0, numLeds)] = CHSV(
-            map(beatInfo.animationFrame(32), 0, 1000, 0, 255),
-            255,
-            160);
-        
-        leds[map(beatInfo.animationFrame(8), 0, 1000, numLeds, -1)] = CRGB::Red;
+
+        // first dot: 
+        // - length of 50 pixels
+        // - color -> rainbow; full spectrum within 32 beats, blended to black
+        // - position: full led strip within 1 beat
+        CHSV color1 = CHSV(map(beatInfo.animationFrame(32), 0, 1000, 0, 255),
+                           255,
+                           160);
+
+        int length = 50;
+        int ledPos = map(beatInfo.animationFrame(1), 0, 1000, 0, numLeds);
+
+        for (int i = 0; i < length; i++)
+        {
+            int p = min(numLeds, max(0, ledPos + i));
+            leds[p] = color1;
+            leds[p].fadeToBlackBy((length - i) * (255. / length));
+        }
+
+
+        // second dot:
+        // - length of 10 pixels
+        // - position: moves in reverse within 8 beats
+        // - color: fixed to red, blended to black
+        int redLed = map(beatInfo.animationFrame(8), 0, 1000, numLeds, 0);
+    
+        length = 10;
+        for (int i = 0; i < length; i++)
+        {
+            int p = min(numLeds, max(0, redLed + i));
+            leds[p] = blend(leds[redLed], CRGB::Red, 30);
+            leds[p].fadeToBlackBy((i) * (255. / length));
+        }
+
     }
 };
 
