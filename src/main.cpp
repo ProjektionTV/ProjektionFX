@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#include <ESP8266WebServer.h>
-#include <WiFiManager.h>
+// #include <ESP8266WebServer.h>
+#include <ESP_WiFiManager.h>
 
 #include "BeatInfo.h"
 #include "settings.h"
@@ -17,7 +17,7 @@ BeatInfo beatInfo;
 
 int currentEffect = PFX_BLINK_RAINBOW;
 
-WiFiManager wifiManager;
+ESP_WiFiManager wifiManager;
 
 void setup()
 {
