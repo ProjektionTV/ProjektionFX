@@ -2,7 +2,7 @@
 #include <FastLED.h>
 
 // #include <ESP8266WebServer.h>
-#include <ESP_WiFiManager.h>
+#include <WiFiManager.h>
 
 #include "BeatInfo.h"
 #include "settings.h"
@@ -17,16 +17,14 @@ BeatInfo beatInfo;
 
 int currentEffect = PFX_BLINK_RAINBOW;
 
-ESP_WiFiManager wifiManager;
+WiFiManager wifiManager;
 
 void setup()
 {
 
   Serial.begin(115200);
 
-
-  wifiManager.setDebugOutput(true);
-  wifiManager.autoConnect();
+  wifiManager.autoConnect("ProjektionFX");
 
   setupMqtt();
 
@@ -45,6 +43,9 @@ void loop()
     break;
   case PFX_MOVING_DOT:
     EffectMovingDot::run(beatInfo, leds, NUM_LEDS);
+    break;
+  case PFX_MOVING_DOT_SIMPLE:
+    EffectMovingDotSimple::run(beatInfo, leds, NUM_LEDS);
     break;
   default:
     break;

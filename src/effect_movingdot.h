@@ -11,7 +11,7 @@ public:
 
         EVERY_N_MILLIS(10)
         {
-
+        
             leds.fadeToBlackBy(20);
         };
 
@@ -19,7 +19,7 @@ public:
             map(beatInfo.animationFrame(32), 0, 1000, 0, 255),
             255,
             160);
-
+        
         leds[map(beatInfo.animationFrame(8), 0, 1000, numLeds, -1)] = CRGB::Red;
     }
 };
