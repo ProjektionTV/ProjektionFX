@@ -16,6 +16,8 @@ public:
 
         int greenLED = map(beatInfo.animationFrame(2), 0, 1000, 0, numLeds);
         leds[greenLED] = CRGB::Green;
+
+        blur1d(leds, numLeds, 64);
     }
 };
 
