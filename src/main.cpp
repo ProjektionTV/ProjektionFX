@@ -4,6 +4,8 @@
 // #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 
+#include <ArduinoOTA.h>
+
 #include "BeatInfo.h"
 #include "settings.h"
 
@@ -26,6 +28,7 @@ void setup()
 
   wifiManager.autoConnect("ProjektionFX");
 
+  ArduinoOTA.begin();
   setupMqtt();
 
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
@@ -33,7 +36,13 @@ void setup()
 
 void loop()
 {
-  loopMqtt();
+
+  EVERY_N_MILLIS(50)
+  {
+    loopMqtt();
+    ArduinoOTA.handle();
+  }
+
   beatInfo.loop();
 
   switch (currentEffect)
