@@ -9,9 +9,10 @@
  */
 long BeatInfo::animationFrame(int beats)
 {
-    int millisPerBeat = 60000 / this->bpm;
+    double millisPerBeat = this->millisPerBeat();
+    int result = map(this->time % ((int)(millisPerBeat * beats)), 0, millisPerBeat * beats, 0, 1000);
 
-    return map(this->time % (millisPerBeat * beats), 0, millisPerBeat * beats, 0, 1000);
+    return result;
 }
 
 /**
