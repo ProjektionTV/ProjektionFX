@@ -1,6 +1,11 @@
 #if !defined(_PROJECTIONFX_CONFIGURATION_H__)
 #define _PROJECTIONFX_CONFIGURATION_H__
 
+#ifndef CONFIG_ESP32_PHY_MAX_TX_POWER
+    #define CONFIG_ESP32_PHY_MAX_TX_POWER CONFIG_ESP_PHY_MAX_WIFI_TX_POWER
+#endif
+
+
 #include <FS.h>
 #include "settings.h"
 #include <ArduinoJson.h>
@@ -9,6 +14,7 @@
 #ifdef ESP32
 #include <SPIFFS.h>
 #endif
+
 
 WiFiManager wifiManager;
 
