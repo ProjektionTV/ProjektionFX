@@ -38,4 +38,23 @@ jobs:
           pip install --upgrade platformio
       - name: Run Platformio
         run: pio run -e d1_mini
-        
+      - uses: actions/upload-artifact@v2
+        with:
+          name: firmware-release
+          path: ./.pio/build/*/*.bin
+  upload:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: firmware-release
+      - name: Create draft release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: True
+          files: |
+            *.bin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
