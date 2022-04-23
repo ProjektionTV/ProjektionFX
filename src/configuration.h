@@ -102,7 +102,11 @@ private:
     {
         Serial.println("mounting FS...");
 
+#ifdef ESP32
         if (SPIFFS.begin(true))
+#else
+        if (SPIFFS.begin())
+#endif
         {
             Serial.println("mounted file system");
             if (SPIFFS.exists("/config.json"))
