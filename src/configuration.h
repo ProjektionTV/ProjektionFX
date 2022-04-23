@@ -59,6 +59,7 @@ public:
             this->save();
         }
 
+        Serial.printf("Connected, IP: %s\n", WiFi.localIP().toString().c_str());
         Serial.println("Configuration completed!");
     }
     const char *getMQTTHost() { return mqttHost.c_str(); };
