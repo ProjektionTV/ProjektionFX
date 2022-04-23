@@ -44,7 +44,7 @@ public:
     {
         leds.fadeToBlackBy(20);
 
-        int color = map(beatInfo.animationFrame(1), 0, 1000, 0, 255);
+        int color = map(beatInfo.animationFrame(4), 0, 1000, 0, 255);
         // int brightness = sin8(map(beatInfo.animationFrame(4), 0, 1000, 0, 255));
 
         float bF = mapf(beatInfo.animationFrame(2), 0, 1000, -1.0, 1.0);
