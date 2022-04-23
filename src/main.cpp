@@ -19,15 +19,6 @@ BeatInfo beatInfo;
 
 int currentEffect = PFX_BLINK_RAINBOW;
 
-
-
-bool shouldSaveConfig = false;
-
-void saveConfigCallback () {
-  Serial.println("Should save config");
-  shouldSaveConfig = true;
-}
-
 void setup()
 {
 
@@ -65,6 +56,9 @@ void loop()
     break;
   case PFX_MOVING_DOT_SIMPLE:
     EffectMovingDotSimple::run(beatInfo, leds, NUM_LEDS);
+    break;
+  case PFX_BEATING_RAINBOW_STRIPES:
+    EffectBeatingRainbowStripes::run(beatInfo, leds, NUM_LEDS);
     break;
   default:
     break;
