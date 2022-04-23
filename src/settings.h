@@ -6,12 +6,14 @@
 #include "settings_custom.h"
 #else
 
-#define MQTT_HOST "mqtt-hostname.example.copm"
-#define MQTT_USER "<<YOUR_USERNAME>>"
-#define MQTT_PASSWORD "<<YOUR_PASSWORD>>"
+#define MQTT_HOST "mqtt.example.com"
+#define MQTT_USER "user"
+#define MQTT_PASSWORD "password"
 
-#define LED_PIN D6
-#define NUM_LEDS 60
+#ifndef LED_PIN
+    #define LED_PIN D6
+#endif    
+#define NUM_LEDS 256
 
 #define DEBUG_SERIAL true
 #endif

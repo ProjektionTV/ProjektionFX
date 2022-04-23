@@ -5,6 +5,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include "settings.h"
+#include "configuration.h"
 
 #include <BeatInfo.h>
 
@@ -12,6 +13,9 @@ extern BeatInfo beatInfo;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+
+const char *mqttUser;
+const char *mqttPassword;
 
 void callback(char *topic, byte *payload, unsigned int length);
 void reconnect();
@@ -26,7 +30,8 @@ void reconnect()
     String clientId = "PROJEKTIONFX-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
-    if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD))
+
+    if (client.connect(clientId.c_str(), config.getMQTTUser(), config.getMQTTPassword()))
     {
       Serial.println("connected");
       client.subscribe("projektiontv/stream/dj/songinfo/bpm");
@@ -50,20 +55,22 @@ void callback(char *topic, byte *payload, unsigned int length)
     deserializeJson(doc, payload, length);
 
     double bpm = doc["bpm"];
-    Serial.printf("BPM %f\n", bpm);
+    Serial.printf("MQTT Received BPM: %f\n", bpm);
     beatInfo.setBPM(bpm);
   }
 }
 
-void setupMqtt()
+void setupMqtt(const char *host)
 {
+
   Serial.println("Setting Up MQTT");
-  client.setServer(MQTT_HOST, 1883);
+  Serial.printf("- connect to %s\n", host);
+  client.setServer(host, 1883);
 
   client.setCallback(callback);
   reconnect();
 
-  Serial.println("MQTT Connect Done!");
+  Serial.println("MQTT Setup completed!");
 }
 
 void loopMqtt()

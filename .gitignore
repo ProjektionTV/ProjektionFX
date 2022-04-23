@@ -34,5 +34,6 @@
 
 .pio
 .vscode
+build_output
 
 src/settings_custom.h
