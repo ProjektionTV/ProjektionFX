@@ -1,11 +1,12 @@
 # ProjektionFX
 
-ProjektionFX lässt deine WS2812-LED-Stripes zu Hause im Takt von den DJ Streams von unserem Ilja von ProjektionTV aufleuchten!
+ProjektionFX lässt deine WS2812-LED-Stripes zu Hause im Takt von den DJ Streams von unserem Ilja von [ProjektionTV](https://www.projektion.tv/) aufleuchten!
 
 Besuche uns gerne:
 - 📺 Live auf [twitch.tv/projektiontv](https://www.twitch.tv/projektiontv/)  
 Streams immer *Montag, Mittwoch und Freitag* von 16:00 Uhr bis ca. 20/21 Uhr
 - 🤷‍♂️ auf unserem [Discord](https://discord.gg/92JNBJR) - dort tummeln sich viele nette und hilfsbereite ProjektionTV ZuschauerInnen herum. Die beste Anlaufstelle, wenn es Fragen gibt!
+- auf der [ProjektionTV Webseite](https://www.projektion.tv/)
 
 # Inhaltsverzeichnis
 
