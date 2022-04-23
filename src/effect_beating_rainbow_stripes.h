@@ -52,12 +52,19 @@ public:
 
         for (int i = 4; i <= 32; i *= 2)
         {
-            int beat2 = sin8(map(beatInfo.animationFrame(i), 0, 1000, 0, 255));
-            int led = map(beat2, 0, 255, 0, numLeds);
+            int beat = sin8(map(beatInfo.animationFrame(i), 0, 1000, 0, 255));
+            int led = map(beat, 0, 255, 0, numLeds);
             leds[led] += CHSV(color, 255, map(brightness, 0, 255, 64, 255));
         }
 
-        blur1d(leds, numLeds, 32);
+        for (int i = 4; i <= 32; i *= 2)
+        {
+            int beat = sin8(map(beatInfo.animationFrame(i), 0, 1000, 0, 255));
+            int led = map(beat, 0, 255, numLeds, 0);
+            leds[led] += CHSV(color, 255, map(brightness, 0, 255, 64, 255));
+        }
+
+        blur1d(leds, numLeds, 64);
     }
 };
 
