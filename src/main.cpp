@@ -2,7 +2,6 @@
 #include <FastLED.h>
 
 // #include <ESP8266WebServer.h>
-#include <WiFiManager.h>
 
 #include <ArduinoOTA.h>
 
@@ -10,6 +9,7 @@
 #include "settings.h"
 
 #include "mqtt.h"
+#include "configuration.h"
 
 #include "effects.h"
 
@@ -19,19 +19,29 @@ BeatInfo beatInfo;
 
 int currentEffect = PFX_BLINK_RAINBOW;
 
-WiFiManager wifiManager;
+
+
+bool shouldSaveConfig = false;
+
+void saveConfigCallback () {
+  Serial.println("Should save config");
+  shouldSaveConfig = true;
+}
 
 void setup()
 {
 
   Serial.begin(115200);
 
-  wifiManager.autoConnect("ProjektionFX");
+  config.setupWifiPortal();
 
   ArduinoOTA.begin();
-  setupMqtt();
+
+  setupMqtt(config.getMQTTHost());
 
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
+  // FastLED.setMaxPowerInVoltsAndMilliamps(5, 1000);
+  // FastLED.setBrightness(32);
 }
 
 void loop()
@@ -65,7 +75,7 @@ void loop()
   EVERY_N_SECONDS(30)
   {
     currentEffect = (currentEffect + 1) % EFFECTS_TOTAL;
-    Serial.printf("current effect: %i", currentEffect);
+    Serial.printf("current effect: %i\n", currentEffect);
   };
 
   // debug only :)
