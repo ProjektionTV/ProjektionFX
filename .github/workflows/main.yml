@@ -42,7 +42,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           name: firmware-release
-          path: ./.pio/build/*/*.bin
+          path: ./build_output/release/*.bin
   upload:
     needs: [build]
     runs-on: ubuntu-latest
