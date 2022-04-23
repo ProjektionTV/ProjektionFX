@@ -34,9 +34,9 @@ Streams immer *Montag, Mittwoch und Freitag* von 16:00 Uhr bis ca. 20/21 Uhr
 - Als erstes installiere [esptool.py](https://docs.espressif.com/projects/esptool/en/latest/esp32/) (Benötigt Python und [pip](https://pip.pypa.io/en/stable/installation/))
 - Lade die aktuelle Binärdatei von der [Releases](https://github.com/ProjektionTV/ProjektionFX/releases) Seite herunter.  
     Download-Links für die neusten Versionen:
-    - [ESP8266 - D1 Mini](https://github.com/realSixi/ProjektionFX/releases/latest/download/ProjektionFX_d1_mini_ESP8266.bin)
-    - [ESP8266 - NodeMCU](https://github.com/realSixi/ProjektionFX/releases/latest/download/ProjektionFX_nodemcuv2_ESP8266.bin)
-    - [ESP32 - ESP32Thing](https://github.com/realSixi/ProjektionFX/releases/latest/download/ProjektionFX_esp32thing_ESP32.bin)
+    - [ESP8266 - D1 Mini](https://github.com/ProjektionTV/ProjektionFX/releases/latest/download/ProjektionFX_d1_mini_ESP8266.bin)
+    - [ESP8266 - NodeMCU](https://github.com/ProjektionTV/ProjektionFX/releases/latest/download/ProjektionFX_nodemcuv2_ESP8266.bin)
+    - [ESP32 - ESP32Thing](https://github.com/ProjektionTV/ProjektionFX/releases/latest/download/ProjektionFX_esp32thing_ESP32.bin)
 - Stelle sicher, dass nur *ein* ESP mit deinem Computer verbunden ist, um nicht aus versehen den falschen ESP zu flashen! Du kannst auch direkt den Port angeben, z.B. `-port COM4` nach dem `write_flash` in den nachfolgenden Befehlen
 
 **ESP8266**
