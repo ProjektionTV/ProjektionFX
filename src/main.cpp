@@ -13,6 +13,8 @@
 
 #include "effects.h"
 
+#include "artnet.h"
+
 CRGBArray<NUM_LEDS> leds;
 
 BeatInfo beatInfo;
@@ -30,6 +32,10 @@ void setup()
 
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
   FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
+
+#ifdef ARTNET_ENABLED
+  artnetSync.setup();
+#endif
 }
 
 void loop()
@@ -43,6 +49,10 @@ void loop()
   effectsRunner.run();
 
   FastLED.show();
+
+#ifdef ARTNET_ENABLED
+  artnetSync.loop();
+#endif
 
   EVERY_N_SECONDS(30)
   {
