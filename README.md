@@ -86,7 +86,7 @@ In dem fertigen Image ist der Standard PIN für den LED Stripe für einen ESP826
 
 ![D1 Mini](images/hardware/d1mini_wiring.png)
 
-Die fertigen Images von ProjektionTV gehen von einem LED Strip mit 60 LEDs aus. Dies kann momentan leider noch nicht angepasst werden.
+Die fertigen Images von ProjektionFX gehen von einem LED Strip mit 60 LEDs aus. Dies kann momentan leider noch nicht angepasst werden.
 
 **Spannungsversorgung**
 
