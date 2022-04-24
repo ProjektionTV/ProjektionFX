@@ -11,9 +11,11 @@
 #define MQTT_PASSWORD "password"
 
 #ifndef LED_PIN
-    #define LED_PIN D6
+    #define LED_PIN D4
 #endif    
-#define NUM_LEDS 256
+#define NUM_LEDS 60
+#define LED_MAX_MILLIAMP 1000
+
 
 #define DEBUG_SERIAL true
 #endif
