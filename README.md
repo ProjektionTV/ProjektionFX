@@ -177,7 +177,7 @@ public:
 
 ### Funktionsweise von `beatInfo.animationFrame(n)`
 
-Um die Programmierung von Effekten zu vereinfachen - und nicht selbst mit BPM, Zeiten, Beginn des Liedes usw. rechnen zu müssen - gibt die Methode `beatInfo.animationFrame(n)` eine "Stadardisierte" Information über den Beat zurück.
+Um die Programmierung von Effekten zu vereinfachen - und nicht selbst mit BPM, Zeiten, Beginn des Liedes usw. rechnen zu müssen - gibt die Methode `beatInfo.animationFrame(n)` eine "Standardisierte" Information über den Beat zurück.
 
 Die Methode gibt einen Integer-Wert zurück, der jeweils von 0 bis 1000 läuft. Über den Parameter der Methode lässt sich skalieren, über _wieviele Beats_ sich dieser Bereich von 0-1000 erstrecken soll:
 
@@ -219,7 +219,7 @@ Wenn also nun ein Lied mit 60 BPM angespielt wird (d.h. 60 Beats pro Sekunde, al
 - 4. Beat: Gelb
 - 5. Beat: *wieder von vorne* Rot
 
-Wenn man nun z.B. einen "Punkt" im Takt über den kompletten LED-Streifen wandern lassen möchte, so muss man den Rückgabewert auf die Anzahl der LEDs mappen. Dies geht am einfachsten mit der `map` Funktion der Arduino-Bibliotheken: `map(inputWert, inputVon, inputBis, outputVon, outputBis)`, also für das Beispiel:
+Wenn man nun z.B. einen "Punkt" in einem Takt (=4 Beats) über den kompletten LED-Streifen wandern lassen möchte, so muss man den Rückgabewert auf die Anzahl der LEDs mappen. Dies geht am einfachsten mit der `map` Funktion der Arduino-Bibliotheken: `map(inputWert, inputVon, inputBis, outputVon, outputBis)`, also für das Beispiel:
 
 ```cpp
 leds = CRGB::Black; // erst mal alle LEDs auf aus ("schwarz") stellen
