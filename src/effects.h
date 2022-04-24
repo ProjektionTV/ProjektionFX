@@ -5,14 +5,16 @@
 #include "effect_blink_rainbow.h"
 #include "effect_movingdot_simple.h"
 #include "effect_beating_rainbow_stripes.h"
+#include "effect_breath_center.h"
 
-#define EFFECTS_TOTAL 4
+#define EFFECTS_TOTAL 5
 
 // List of effects
 #define PFX_MOVING_DOT 0
 #define PFX_BLINK_RAINBOW 1
 #define PFX_MOVING_DOT_SIMPLE 2
 #define PFX_BEATING_RAINBOW_STRIPES 3
+#define PFX_BREATH_CENTER 4
 
 extern CRGBArray<NUM_LEDS> leds;
 
@@ -26,6 +28,7 @@ public:
     {
         switch (currentEffect)
         {
+        default:
         case PFX_MOVING_DOT:
             EffectMovingDot::run(beatInfo, leds, NUM_LEDS);
             break;
@@ -38,7 +41,8 @@ public:
         case PFX_BEATING_RAINBOW_STRIPES:
             EffectBeatingRainbowStripes::run(beatInfo, leds, NUM_LEDS);
             break;
-        default:
+        case PFX_BREATH_CENTER:
+            EffectBreathCenter::run(beatInfo, leds, NUM_LEDS);
             break;
         }
     }
