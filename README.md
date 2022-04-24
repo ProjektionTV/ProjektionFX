@@ -17,7 +17,7 @@ Besuche uns gerne:
 
 # Benötigte Hardware
 
-- einen [ESP8266](https://amzn.to/38htUZG)_ oder [ESP32](https://amzn.to/38h9P5I)_ Mikrocontroller
+- einen [ESP8266](https://amzn.to/38htUZG)\* oder [ESP32](https://amzn.to/38h9P5I)\* Mikrocontroller
 - einen [WS2812-LED Stripe](https://amzn.to/2LL7WH3)\*
 - ein paar Kabel, um den ESP und den LED Stripe miteinander zu verbinden
 - _Optional:_ Wenn dein LED Stripe lang ist, dann solltest du Ihn über ein Netzteil extra mit Strom versorgen!
