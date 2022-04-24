@@ -14,7 +14,7 @@ Streams immer *Montag, Mittwoch und Freitag* von 16:00 Uhr bis ca. 20/21 Uhr
 - 🛠 [Installation](#installation)
 - ⌨️ [mit Entwickeln](#mit-entwickeln)
 
-## Benötigte Hardware
+# Benötigte Hardware
 - einen [ESP8266](https://amzn.to/38htUZG)* oder [ESP32](https://amzn.to/38h9P5I)* Mikrocontroller
 - einen [WS2812-LED Stripe](https://amzn.to/2LL7WH3)*
 - ein paar Kabel, um den ESP und den LED Stripe miteinander zu verbinden
@@ -23,13 +23,13 @@ Streams immer *Montag, Mittwoch und Freitag* von 16:00 Uhr bis ca. 20/21 Uhr
 
 <sup>*mit Sternchen (\*) gekennzeichnete Links sind Affiliate-/Werbelinks. Wenn du mit diesen einkaufst, dann unterstützt du ProjektionTV! Vielen Dank!*</sup>
 
-## Installation
+# Installation
 
-### Methode 1: Web installer
+## Methode 1: Web installer
 
 (tbd)
 
-### Methode 2: Image herunterladen
+## Methode 2: Image herunterladen
 
 - Als erstes installiere [esptool.py](https://docs.espressif.com/projects/esptool/en/latest/esp32/) (Benötigt Python und [pip](https://pip.pypa.io/en/stable/installation/))
 - Lade die aktuelle Binärdatei von der [Releases](https://github.com/ProjektionTV/ProjektionFX/releases) Seite herunter.  
@@ -59,7 +59,7 @@ esptool.py write_flash 0x10000 ./ProjektionFX_XXX.bin
 
 *Bei manchen ESPs muss der **BOOT** Knopf gedrückt werden, damit ein neues Image geflasht werden kann.*
 
-## Einrichtung
+# Einrichtung
 
 Wenn du ProjektionFX erfolgreich aufgespielt hast, dann öffnet dieser (wenn er an den Strom angeschlossen ist) ein WLAN, über dass du ProjektionFX konfigurieren kannst.
 
@@ -128,13 +128,13 @@ public:
 };
 ```
 
-### Bitte beachten:
+## Bitte beachten:
 - ProjektionFX nutzt die großartige Bibliothek [FastLED](https://github.com/FastLED/FastLED); schau dort gerne in die Dokumentation, welche Funktionen / Hilfsfunktionen zur Verfügung stehen!
 - ein Effekt darf/sollte **nicht** die Arduino oder FastLED `delay()` Methode nutzen und damit die Ausführung anhalten.
 - die "Animation" der Effekte sollte irgendwie von dem Beat abhängig sein. Da die Lieder meist einen 4/4tel Takt haben, ist es meist am wirkungsvollsten, wenn du auf ein 4-faches von dem Beat 'animierst', also indem du der `beatInfo.animationFrame()`-Methode 4, 8, 16, usw. als Parameter übergibst
 
 
-### ProjektionFX Kern
+## ProjektionFX Kern
 
 Momentan ist ProjektionFX ein kleines Grundgerüst, das noch deutlich weiterentwickelt werden muss. 
 Aktuell werden nur die BPM, also die Beats pro Minute, abgefragt und ausgewertet. Aber das soll nicht so bleiben!
