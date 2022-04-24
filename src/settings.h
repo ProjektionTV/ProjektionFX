@@ -14,7 +14,7 @@
     #define LED_PIN D4
 #endif    
 #define NUM_LEDS 60
-#define LED_MAX_MILLIAMP 1000
+#define LED_MAX_MILLIAMP 500
 
 
 #define DEBUG_SERIAL true
