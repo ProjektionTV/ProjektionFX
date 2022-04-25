@@ -6,7 +6,7 @@
 class EffectMovingDotSimple : public Effect
 {
 public:
-    static void run(BeatInfo beatInfo, CRGBSet leds, int numLeds)
+    static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
         // alle LEDs werden etwas "ausgeschaltet", also dunkler
         leds.fadeToBlackBy(100); 

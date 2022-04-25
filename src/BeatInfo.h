@@ -11,7 +11,7 @@ class BeatInfo
 {
 public:
     void loop();
-    long animationFrame(int beats);
+    virtual long animationFrame(int beats);
     double millisPerBeat();
     void changeBPM();
     void setBPM(double bpm);
