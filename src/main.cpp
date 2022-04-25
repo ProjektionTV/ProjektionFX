@@ -13,7 +13,9 @@
 
 #include "effects.h"
 
-#include "artnet.h"
+// #include "artnet.h"
+
+#include "e131sync.h"
 
 CRGBArray<NUM_LEDS> leds;
 
@@ -34,7 +36,7 @@ void setup()
   FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
 
 #ifdef ARTNET_ENABLED
-  artnetSync.setup();
+  e131sync.setup();
 #endif
 }
 
@@ -51,7 +53,7 @@ void loop()
   FastLED.show();
 
 #ifdef ARTNET_ENABLED
-  artnetSync.loop();
+  e131sync.loop();
 #endif
 
   EVERY_N_SECONDS(30)
