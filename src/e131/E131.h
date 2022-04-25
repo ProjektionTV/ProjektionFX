@@ -30,6 +30,14 @@
 #define _UDP WiFiUDP
 #define INT_ESP8266
 #define INT_WIFI
+#elif defined(ARDUINO_ARCH_ESP32)
+#include <WiFi.h>
+#include <WebServer.h>
+
+#define _UDP WiFiUDP
+#define INT_ESP32
+#define INT_WIFI
+
 #elif defined(ARDUINO_ARCH_AVR)
 #include <Ethernet.h>
 #include <EthernetUdp.h>
@@ -251,7 +259,7 @@ public:
 /****** END - Wireless ifdef block ******/
 
 /****** START - ESP8266 ifdef block ******/
-#if defined(INT_ESP8266)
+#if defined(INT_ESP8266) || defined(INT_ESP32)
     /* Multicast WiFi Initializers -- ESP8266 Only */
     int beginMulticast(const char *ssid, const char *passphrase,
                        uint16_t universe);
@@ -284,7 +292,16 @@ public:
         IPAddress ipMultiE131 = IPAddress(239, 255, ((universe >> 8) & 0xff),
                                           ((universe >> 0) & 0xff));
         setPacketHeader(universe, 512);
+#ifdef ARDUINO_ARCH_ESP8266
         udp.beginPacketMulticast(ipMultiE131, E131_DEFAULT_PORT, WiFi.localIP());
+#elif ARDUINO_ARCH_ESP32
+        // udp.beginMulticast(ipMultiE131, E131_DEFAULT_PORT);
+        // udp.beginMulticast(ipMultiE131, E131_DEFAULT_PORT);
+        // udp.beginPacket();
+        udp.beginPacket(ipMultiE131, E131_DEFAULT_PORT);
+
+#endif
+
         udp.write(pwbuffTX->raw, sizeof(pwbuffTX->raw));
         // udp.write(pwbuff->raw, sizeof(pwbuff->raw) );
         udp.endPacket();
