@@ -9,7 +9,7 @@
 class Effect
 {
 public:
-    static void run(BeatInfo beatInfo, CRGB leds[], int numLeds);
+    static void run(BeatInfo& beatInfo, CRGB leds[], int numLeds);
 };
 
 #endif // EFFECT_H__

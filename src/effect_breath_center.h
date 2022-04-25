@@ -7,7 +7,7 @@ class EffectBreathCenter : public Effect
 {
 private:
 public:
-    static void run(BeatInfo beatInfo, CRGBSet leds, int numLeds)
+    static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
         // breath speed: every beat
         int frame = beatInfo.animationFrame(1);

@@ -6,7 +6,7 @@
 class EffectMovingDot : public Effect
 {
 public:
-    static void run(BeatInfo beatInfo, CRGBSet leds, int numLeds)
+    static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
 
         leds = CRGB::Black;

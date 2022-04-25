@@ -40,7 +40,7 @@ public:
     {
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
-    static void run(BeatInfo beatInfo, CRGBSet leds, int numLeds)
+    static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
         leds.fadeToBlackBy(20);
 
