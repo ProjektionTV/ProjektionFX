@@ -30,7 +30,7 @@ public:
         artnet.setUniverse(0);
         artnet.setShortName("ProjektionFX");
         artnet.setLongName("ProjektionFX ArtnetSync");
-        artnet.setPortType(0, 0x40);
+        // artnet.setPortType(0, 0x40);
     }
     void loop()
     {
