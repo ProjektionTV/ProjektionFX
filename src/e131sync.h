@@ -19,12 +19,12 @@ public:
         if (DMXsequence > 0xFF)
             DMXsequence = 1;
         e131.setSequenceNumber(DMXsequence++);
-        e131.setSourceName("ProjektioNFX");
+        e131.setSourceName("ProjektionFX");
 
         for (int i = 0; i < NUM_LEDS; i++)
         {
             CRGB led = leds[i];
-            e131.setRGB(i * 3, led.g, led.b, led.r); // not sure about the order; seems strange, but fits for me.
+            e131.setRGB(i * 3, led.r, led.g, led.b); // not sure about the order; seems strange, but fits for me.
         }
         e131.sendPacket(universeTX);
     }

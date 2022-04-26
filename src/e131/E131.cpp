@@ -76,7 +76,7 @@ void E131::initUnicast()
     }
 }
 
-void E131::setRGB(const uint8_t channel, const uint8_t dRed, const uint8_t dGreen, const uint8_t dBlue)
+void E131::setRGB(const uint16_t channel, const uint8_t dRed, const uint8_t dGreen, const uint8_t dBlue)
 {
     // first channel on [1]; [0] has to be 0
     pwbuffTX->dmp.prop_val[channel + 1] = dRed;
