@@ -22,8 +22,7 @@ void reconnect();
 
 void reconnect()
 {
-  // Loop until we're reconnected
-  while (!client.connected())
+  if(!client.connected())
   {
     Serial.print("Attempting MQTT connection...");
     // Create a random client ID
