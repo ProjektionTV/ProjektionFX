@@ -1,4 +1,3 @@
-
 #ifndef __PROJECTIONFX_SETTINGS_H__
 #define __PROJECTIONFX_SETTINGS_H__
 
