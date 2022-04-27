@@ -26,6 +26,7 @@ private:
 public:
     void run()
     {
+        Serial.printf("Current effect %d\n", currentEffect);
         switch (currentEffect)
         {
         default:

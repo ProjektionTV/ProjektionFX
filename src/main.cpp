@@ -26,7 +26,7 @@ void setup()
 
   Serial.begin(115200);
 
-  config.setupWifiPortal();
+  config.setupWifiPortal("ProjektionFX");
 
   ArduinoOTA.begin();
 
@@ -42,7 +42,7 @@ void setup()
 
 void loop()
 {
-
+  config.connectionGuard();
   loopMqtt();
   ArduinoOTA.handle();
 

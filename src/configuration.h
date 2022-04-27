@@ -23,13 +23,18 @@ inline void configCallback();
 class Configuration
 {
 public:
-    void setupWifiPortal()
+    void setupWifiPortal(String hostName)
     {
+        WiFi.mode(WIFI_STA);
+        WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
+        WiFi.setHostname(hostName.c_str()); //define hostname
 
         this->setupSPIFF();
         // wifiManager.resetSettings();
 
         wifiManager.setDebugOutput(false);
+        wifiManager.setConfigPortalTimeout(300);
+
         WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqttHost.c_str(), 40);
         wifiManager.addParameter(&custom_mqtt_server);
 
@@ -40,7 +45,20 @@ public:
         wifiManager.addParameter(&custom_mqtt_password);
 
         wifiManager.setSaveConfigCallback(configCallback);
-        wifiManager.autoConnect("ProjektionFX");
+
+        Serial.print("Attempting WiFi connection... ");
+        bool res;
+        res = wifiManager.autoConnect(hostName.c_str());
+        if (!res)
+        {
+            Serial.println("failed! -> Reset");
+            delay(2500);
+            ESP.restart();
+        }
+        else
+        {
+            Serial.printf("connected, IP: %s\n", WiFi.localIP().toString().c_str());
+        } 
 
         mqttHost = custom_mqtt_server.getValue();
         mqttUser = custom_mqtt_user.getValue();
@@ -59,7 +77,6 @@ public:
             this->save();
         }
 
-        Serial.printf("Connected, IP: %s\n", WiFi.localIP().toString().c_str());
         Serial.println("Configuration completed!");
     }
     const char *getMQTTHost() { return mqttHost.c_str(); };
@@ -68,6 +85,29 @@ public:
     void enableSave()
     {
         this->shouldSave = true;
+    }
+
+    void connectionGuard()
+    {
+        if(!WiFi.isConnected())
+        {
+            Serial.print("\nAttempting WiFi reconnect");
+            WiFi.begin();
+            static uint8_t tries = 120;
+
+            while(!WiFi.isConnected())
+            {
+                if(!tries--)
+                {
+                    Serial.println("\nfailed! -> Reset");
+                    delay(2500);
+                    ESP.restart();
+                }
+                Serial.print('.');
+                delay(1000);
+            }
+            Serial.println(" connected.");
+        }       
     }
 
 private:
