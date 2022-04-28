@@ -18,7 +18,7 @@ public:
         int byteFrame = map(frame, 0, 999, 0, 255);
 
         // width of the lightended leds, min 10% of numleds
-        int width = map(sin8(byteFrame), 0, 255, numLeds * 0.1, numLeds);
+        int width = map(sin8(byteFrame), 0, 255, numLeds * 0.1, numLeds-1);
 
         // center position
         int ledCenter = numLeds / 2;
