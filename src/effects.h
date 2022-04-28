@@ -21,7 +21,7 @@ extern CRGBArray<NUM_LEDS> leds;
 class EffectsRunner
 {
 private:
-    int currentEffect = PFX_BEATING_RAINBOW_STRIPES;
+    int currentEffect = PFX_MOVING_DOT_SIMPLE;
 
 public:
     void run()
