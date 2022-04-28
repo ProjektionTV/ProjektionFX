@@ -52,7 +52,7 @@ public:
     }
     void setEffect(int effect)
     {
-        if (effect > 0 && effect < EFFECTS_TOTAL)
+        if (effect >= 0 && effect < EFFECTS_TOTAL)
             currentEffect = effect;
     }
     void nextEffect()
