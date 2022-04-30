@@ -241,7 +241,7 @@ public:
     void stopUdp(void);
     void connectMulticast(uint16_t universe);
     void dumpPacket(int packetNo);
-    void setRGB(const uint8_t channel, const uint8_t dRed, const uint8_t dGreen, const uint8_t dBlue);
+    void setRGB(const uint16_t channel, const uint8_t dRed, const uint8_t dGreen, const uint8_t dBlue);
     void setSourceName(const char *source_name); //
     void setSequenceNumber(const int seq_number);
     void setData(const int channel, const int dmxVal);
@@ -295,11 +295,10 @@ public:
 #ifdef ARDUINO_ARCH_ESP8266
         udp.beginPacketMulticast(ipMultiE131, E131_DEFAULT_PORT, WiFi.localIP());
 #elif ARDUINO_ARCH_ESP32
-        udp.beginMulticast(ipMultiE131, E131_DEFAULT_PORT);
-        udp.beginPacket(ipMultiE131, E131_DEFAULT_PORT);
-
+        
+        udp.beginMulticastPacket();
 #endif
-
+        
         udp.write(pwbuffTX->raw, sizeof(pwbuffTX->raw));
         udp.endPacket();
     }

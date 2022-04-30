@@ -82,6 +82,7 @@ void E131::setRGB(const uint16_t channel, const uint8_t dRed, const uint8_t dGre
     pwbuffTX->dmp.prop_val[channel + 1] = dRed;
     pwbuffTX->dmp.prop_val[channel + 2] = dGreen;
     pwbuffTX->dmp.prop_val[channel + 3] = dBlue;
+
 }
 
 void E131::clearSendBuffer()
