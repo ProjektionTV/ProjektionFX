@@ -8,7 +8,7 @@ public:
         static unsigned long lastBeat;
         static unsigned long lastFade;
 
-        CHSV color = CHSV(map(beatInfo.animationFrame(8), 0, 1000, 0, 255), 255, map(beatInfo.animationFrame(1), 0, 1000, 255, 0));
+        CHSV color = CHSV(map(beatInfo.animationFrame(8), 0, 999, 0, 255), 255, map(beatInfo.animationFrame(1), 0, 999, 255, 0));
 
         for(int i = 0; i < numLeds; i++){
             leds[i] = color;

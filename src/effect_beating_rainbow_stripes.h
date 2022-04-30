@@ -44,23 +44,23 @@ public:
     {
         leds.fadeToBlackBy(20);
 
-        int color = map(beatInfo.animationFrame(4), 0, 1000, 0, 255);
-        // int brightness = sin8(map(beatInfo.animationFrame(4), 0, 1000, 0, 255));
+        int color = map(beatInfo.animationFrame(4), 0, 999, 0, 255);
+        // int brightness = sin8(map(beatInfo.animationFrame(4), 0, 999, 0, 255));
 
-        float bF = mapf(beatInfo.animationFrame(2), 0, 1000, -1.0, 1.0);
+        float bF = mapf(beatInfo.animationFrame(2), 0, 999, -1.0, 1.0);
         int brightness = map(easeInOutElastic(bF) * 100, 0, 100, 0, 255);
 
         for (int i = 4; i <= 32; i *= 2)
         {
-            int beat = sin8(map(beatInfo.animationFrame(i), 0, 1000, 0, 255));
-            int led = map(beat, 0, 255, 0, numLeds);
+            int beat = sin8(map(beatInfo.animationFrame(i), 0, 999, 0, 255));
+            int led = map(beat, 0, 255, 0, numLeds-1);
             leds[led] += CHSV(color, 255, map(brightness, 0, 255, 64, 255));
         }
 
         for (int i = 4; i <= 32; i *= 2)
         {
-            int beat = sin8(map(beatInfo.animationFrame(i), 0, 1000, 0, 255));
-            int led = map(beat, 0, 255, numLeds, 0);
+            int beat = sin8(map(beatInfo.animationFrame(i), 0, 999, 0, 255));
+            int led = map(beat, 0, 255, numLeds-1, 0);
             leds[led] += CHSV(color, 255, map(brightness, 0, 255, 64, 255));
         }
 

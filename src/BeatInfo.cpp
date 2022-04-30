@@ -2,15 +2,16 @@
 #include "BeatInfo.h"
 
 /**
- * @brief maps the provided number of beats to a range from 0 to 1000 according to the current bpm
+ * @brief maps the provided number of beats to a range from 0 to 999 according to the current bpm
  *
  * @param beats the number of beats
- * @return long the current animation frame (0 - 1000)
+ * @return unsigned int the current animation frame (0 - 999)
  */
-long BeatInfo::animationFrame(int beats)
+unsigned int BeatInfo::animationFrame(unsigned int beats)
 {
     double millisPerBeat = this->millisPerBeat();
-    int result = map(this->time % ((int)(millisPerBeat * beats)), 0, millisPerBeat * beats, 0, 1000);
+    unsigned long divisor = millisPerBeat * beats;
+    unsigned int result = map(this->time % divisor, 0, divisor, 0, 1000);
 
     return result;
 }

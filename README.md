@@ -109,7 +109,12 @@ Um die Einstellungen anzupassen, erstelle dir im `src` Ordner eine Datei `settin
 
 
 // LED Konfiguration
-#define LED_PIN D4              // der PIN an dem dein LED Stripe angeschlossen ist
+// der PIN an dem dein LED Stripe angeschlossen ist
+#ifdef ESP32
+#define LED_PIN 4               // für ESP32 - ohne "d"
+#else
+#define LED_PIN D4              // ESP8266 - die Pins werden mit "D" vorangestellt geschrieben
+#endif 
 #define NUM_LEDS  128           // die Anzahl von LEDs
 #define LED_MAX_MILLIAMP 500    // maximale Milliampere
 
@@ -146,12 +151,12 @@ public:
         // ein rotes Licht, dass auf jeden Beat einmal komplett über alle LEDs läuft
         // als erstes wird die Position bestimmt:
         // - die Zeit wo wir uns befinden, wird über die Methode beatInfo.animationFrame(1) abgefragt und
-        //   gibt einen Wert von 0 (= bedeutet, wir sind ganz am Anfang, also der Beat kam gerade) bis 1000
+        //   gibt einen Wert von 0 (= bedeutet, wir sind ganz am Anfang, also der Beat kam gerade) bis 999
         //   (das heißt wir sind ganz am Ende, der nächste Beat kommt gleich!) zurück
-        // - die map()-Methode 'mappt' (Dreisatz!) die Werte von animationFrame (0-1000) auf den Bereich von
-        //   0 bis zu unserer letzten LED (=numLeds)
+        // - die map()-Methode 'mappt' (Dreisatz!) die Werte von animationFrame (0-999) auf den Bereich von
+        //   0 bis zu unserer letzten LED (=numLeds-1)
         // - das Ergebnis wird in der Variable redLEDPosition gespeichert
-        int redLEDPosition = map(beatInfo.animationFrame(1), 0, 1000, 0, numLeds);
+        int redLEDPosition = map(beatInfo.animationFrame(1), 0, 999, 0, numLeds-1);
 
         // nun schalten wir die LED an der Position redLEDPosition auf rot
         leds[redLEDPosition] = CRGB::Red;
@@ -161,10 +166,10 @@ public:
         // d.h.:
         // - bei dem Rückgabewert 0 sind wir auf dem 1. Beat,
         // - bei dem Rückgabewert 500 sind wir auf dem 2. Beat
-        // - bei dem Wert 1000 sind wir wieder ganz kurz vor dem 1. Beat
+        // - bei dem Wert 999 sind wir wieder ganz kurz vor dem 1. Beat
         // Insgesamt braucht die grüne LED immer 2 Beats (bei 120BPM wäre das 1 Sekunde), um über den
         // gesamten LED Streifen zu laufen.
-        int greenLEDPosition = map(beatInfo.animationFrame(2), 0, 1000, 0, numLeds);
+        int greenLEDPosition = map(beatInfo.animationFrame(2), 0, 999, 0, numLeds-1);
         leds[greenLEDPosition] = CRGB::Green;
 
 
@@ -179,7 +184,7 @@ public:
 
 Um die Programmierung von Effekten zu vereinfachen - und nicht selbst mit BPM, Zeiten, Beginn des Liedes usw. rechnen zu müssen - gibt die Methode `beatInfo.animationFrame(n)` eine "Standardisierte" Information über den Beat zurück.
 
-Die Methode gibt einen Integer-Wert zurück, der jeweils von 0 bis 1000 läuft. Über den Parameter der Methode lässt sich skalieren, über _wieviele Beats_ sich dieser Bereich von 0-1000 erstrecken soll:
+Die Methode gibt einen Integer-Wert zurück, der jeweils von 0 bis 999 läuft. Über den Parameter der Methode lässt sich skalieren, über _wieviele Beats_ sich dieser Bereich von 0-999 erstrecken soll:
 
 ![animationFrame Schema](images/beatinfo/animationFrames.png)
 
@@ -193,19 +198,19 @@ static void run(BeatInfo beatInfo, CRGBSet leds, int numLeds)
     int fortschritt = beatInfo.animationFrame(4);
 
     if(fortschritt < 250) {
-        // wenn der Fortschritt zwischen 0 - 249 ist
+        // wenn der Fortschritt zwischen 0 und 249 ist
         // setze die Farbe auf Rot
         leds = CRGB::Red;
     } else if(fortschritt < 500){
-        // wenn der Fortschritt zwischen 250 - 499 ist
+        // wenn der Fortschritt zwischen 250 und 499 ist
         // setze die Farbe auf Grün
         leds = CRGB::Green;
     } else if(fortschritt < 750){
-        // wenn der Fortschritt zwischen 500 - 749 ist
+        // wenn der Fortschritt zwischen 500 und 749 ist
         // setze die Farbe auf Blau
         leds = CRGB::Blue;
     } else {
-        // wenn der Fortschritt zwischen 750 - 1000 ist
+        // wenn der Fortschritt zwischen 750 und 999 ist
         // setze die Farbe auf Gelb
         leds = CRGB::Yellow;
     }
@@ -226,9 +231,9 @@ leds = CRGB::Black; // erst mal alle LEDs auf aus ("schwarz") stellen
 
 // berechne die LED Position:
 // mappe den wert von animationFrame(4) 
-// mit den Werten von 0 bis 1000
-// auf die Werte 0 bis numLeds (also die Anzahl der LEDs)
-int ledPosition = map(animationFrame(4), 0, 1000, 0, numLeds); 
+// mit den Werten von 0 bis 999
+// auf die Werte 0 bis numLeds-1 (also die Anzahl der LEDs)
+int ledPosition = map(animationFrame(4), 0, 999, 0, numLeds-1); 
 led[ledPosition] = CRGB::Red;
 ```
 

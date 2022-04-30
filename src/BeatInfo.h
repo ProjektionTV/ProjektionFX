@@ -11,12 +11,12 @@ class BeatInfo
 {
 public:
     void loop();
-    virtual long animationFrame(int beats);
+    virtual unsigned int animationFrame(unsigned int beats);
     double millisPerBeat();
     void changeBPM();
     void setBPM(double bpm);
 
 private:
-    long time;
+    unsigned long time;
     double bpm = 120;
 };
