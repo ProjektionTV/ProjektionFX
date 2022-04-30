@@ -109,7 +109,12 @@ Um die Einstellungen anzupassen, erstelle dir im `src` Ordner eine Datei `settin
 
 
 // LED Konfiguration
-#define LED_PIN D4              // der PIN an dem dein LED Stripe angeschlossen ist
+// der PIN an dem dein LED Stripe angeschlossen ist
+#ifdef ESP32
+#define LED_PIN 4               // für ESP32 - ohne "d"
+#else
+#define LED_PIN D4              // ESP8266 - die Pins werden mit "D" vorangestellt geschrieben
+#endif 
 #define NUM_LEDS  128           // die Anzahl von LEDs
 #define LED_MAX_MILLIAMP 500    // maximale Milliampere
 
