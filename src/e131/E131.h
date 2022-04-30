@@ -295,10 +295,12 @@ public:
 #ifdef ARDUINO_ARCH_ESP8266
         udp.beginPacketMulticast(ipMultiE131, E131_DEFAULT_PORT, WiFi.localIP());
 #elif ARDUINO_ARCH_ESP32
-        
+        // udp.beginPacket(ipMultiE131, E131_DEFAULT_PORT);
+        // udp.begin(ipMultiE131, E131_DEFAULT_PORT);
+        udp.beginMulticast(ipMultiE131, E131_DEFAULT_PORT);
         udp.beginMulticastPacket();
 #endif
-        
+
         udp.write(pwbuffTX->raw, sizeof(pwbuffTX->raw));
         udp.endPacket();
     }

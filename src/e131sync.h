@@ -14,7 +14,10 @@ private:
 public:
     void setup()
     {
-        e131.begin(E131_MULTICAST, 1);
+        for (int universe = 0; universe <= ceil(NUM_LEDS / 170); universe++){
+            e131.begin(E131_MULTICAST, universe + universeTX);
+        }
+        
     }
     void loop()
     {
