@@ -25,11 +25,10 @@ class Configuration
 public:
     void setupWifiPortal(String hostName)
     {
-        WiFi.mode(WIFI_STA);
-        WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
-        WiFi.setHostname(hostName.c_str()); //define hostname
 
         this->setupSPIFF();
+
+        WiFi.setHostname(hostName.c_str());
         // wifiManager.resetSettings();
 
         wifiManager.setDebugOutput(false);
@@ -47,8 +46,9 @@ public:
         wifiManager.setSaveConfigCallback(configCallback);
 
         Serial.print("Attempting WiFi connection... ");
-        bool res;
-        res = wifiManager.autoConnect(hostName.c_str());
+        
+        wifiManager.setHostname(hostName.c_str());
+        bool res = wifiManager.autoConnect(hostName.c_str(), NULL);
         if (!res)
         {
             Serial.println("failed! -> Reset");
@@ -59,6 +59,7 @@ public:
         {
             Serial.printf("connected, IP: %s\n", WiFi.localIP().toString().c_str());
         } 
+
 
         mqttHost = custom_mqtt_server.getValue();
         mqttUser = custom_mqtt_user.getValue();

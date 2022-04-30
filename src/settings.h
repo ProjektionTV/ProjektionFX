@@ -10,7 +10,11 @@
 #define MQTT_PASSWORD "password"
 
 #ifndef LED_PIN
-#define LED_PIN D4
+    #ifdef ESP32
+    #define LED_PIN 4
+    #else
+    #define LED_PIN D4
+    #endif
 #endif
 #define NUM_LEDS 60
 #define LED_MAX_MILLIAMP 500
