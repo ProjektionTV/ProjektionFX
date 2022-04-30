@@ -28,6 +28,7 @@ public:
 
         this->setupSPIFF();
 
+        WiFi.setHostname(hostName.c_str());
         // wifiManager.resetSettings();
 
         wifiManager.setDebugOutput(false);
@@ -59,7 +60,6 @@ public:
             Serial.printf("connected, IP: %s\n", WiFi.localIP().toString().c_str());
         } 
 
-        WiFi.setHostname(hostName.c_str());
 
         mqttHost = custom_mqtt_server.getValue();
         mqttUser = custom_mqtt_user.getValue();
