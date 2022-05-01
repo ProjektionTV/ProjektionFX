@@ -28,7 +28,8 @@ Besuche uns gerne:
 
 ## Methode 1: Web installer
 
-(tbd)
+Schau auf die [ProjektionTV - Web Installer Webseite](https://www.projektion.tv/esp-install/). Dort musst du nur das Projekt "ProjektionFX" auswählen und auf Install klicken!  
+*Bitte beachte: Der Web Installer geht leider nicht mit Firefox. Bitte Chrome oder Edge verwenden!*
 
 ## Methode 2: Image herunterladen
 
