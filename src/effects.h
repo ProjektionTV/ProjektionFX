@@ -6,8 +6,11 @@
 #include "effect_movingdot_simple.h"
 #include "effect_beating_rainbow_stripes.h"
 #include "effect_breath_center.h"
+#include "effect_quarter_beat_11.h"
+#include "effect_quarter_beat_14.h"
 
-#define EFFECTS_TOTAL 5
+
+#define EFFECTS_TOTAL 6
 
 // List of effects
 #define PFX_MOVING_DOT 0
@@ -15,13 +18,16 @@
 #define PFX_MOVING_DOT_SIMPLE 2
 #define PFX_BEATING_RAINBOW_STRIPES 3
 #define PFX_BREATH_CENTER 4
+#define PFX_QUARTER_BEAT_11 5
+#define PFX_QUARTER_BEAT_14 6
+
 
 extern CRGBArray<NUM_LEDS> leds;
 
 class EffectsRunner
 {
 private:
-    int currentEffect = PFX_MOVING_DOT_SIMPLE;
+    int currentEffect = PFX_QUARTER_BEAT_11;
 
 public:
     void run()
@@ -43,6 +49,12 @@ public:
             break;
         case PFX_BREATH_CENTER:
             EffectBreathCenter::run(beatInfo, leds, NUM_LEDS);
+            break;
+        case PFX_QUARTER_BEAT_11:
+            EffectQuarterBeat11::run(beatInfo, leds, NUM_LEDS);
+            break;
+        case PFX_QUARTER_BEAT_14:
+            EffectQuarterBeat14::run(beatInfo, leds, NUM_LEDS);
             break;
         }
     }
