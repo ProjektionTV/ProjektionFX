@@ -43,6 +43,9 @@ public:
         WiFiManagerParameter custom_mqtt_password("password", "mqtt password", mqttPassword.c_str(), 40);
         wifiManager.addParameter(&custom_mqtt_password);
 
+        WiFiManagerParameter custom_num_leds("numleds", "number leds", String(getNumLEDs(), 10).c_str(), 40);
+        wifiManager.addParameter(&custom_num_leds);
+
         wifiManager.setSaveConfigCallback(configCallback);
 
         Serial.print("Attempting WiFi connection... ");
@@ -64,6 +67,13 @@ public:
         mqttHost = custom_mqtt_server.getValue();
         mqttUser = custom_mqtt_user.getValue();
         mqttPassword = custom_mqtt_password.getValue();
+        numLeds = String(custom_num_leds.getValue()).toInt();
+
+        if(numLeds == 0){
+            numLeds = 60;
+        }
+
+        Serial.printf("Setting LED# to %d\n", numLeds);
 
         if (mqttHost.equals("mqtt.example.com"))
         {
@@ -83,6 +93,7 @@ public:
     const char *getMQTTHost() { return mqttHost.c_str(); };
     const char *getMQTTUser() { return mqttUser.c_str(); };
     const char *getMQTTPassword() { return mqttPassword.c_str(); };
+    int getNumLEDs() { return numLeds; };
     void enableSave()
     {
         this->shouldSave = true;
@@ -116,6 +127,7 @@ private:
     String mqttHost = MQTT_HOST;
     String mqttUser = MQTT_USER;
     String mqttPassword = MQTT_PASSWORD;
+    int numLeds = NUM_LEDS;
 
     inline void save()
     {
@@ -129,6 +141,7 @@ private:
         json["mqtt_host"] = mqttHost;
         json["mqtt_user"] = mqttUser;
         json["mqtt_password"] = mqttPassword;
+        json["num_leds"] = numLeds;
 
         File configFile = SPIFFS.open("/config.json", "w");
         if (!configFile)
@@ -189,14 +202,23 @@ private:
                         String user = json["mqtt_user"];
                         String password = json["mqtt_password"];
 
+                        if(json.containsKey("num_leds")){
+                            int num_leds = json["num_leds"];
+                            numLeds = num_leds;
+                        } else {
+                            numLeds = 60;
+                        }
+
                         mqttHost = host;
                         mqttUser = user;
                         mqttPassword = password;
+                        
 
                         Serial.printf("Config Restored\n");
                         Serial.printf(" mqtt_host:\t %s\n", mqttHost.c_str());
                         Serial.printf(" mqtt_user:\t %s\n", mqttUser.c_str());
                         Serial.printf(" mqtt_password:\t <HIDDEN>\n");
+                        Serial.printf(" num_leds:\t %dn", numLeds);
                     }
                     else
                     {

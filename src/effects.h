@@ -1,6 +1,8 @@
 #if !defined(EFFECTS_H__)
 #define EFFECTS_H__
 
+#include "configuration.h"
+
 #include "effect_movingdot.h"
 #include "effect_blink_rainbow.h"
 #include "effect_movingdot_simple.h"
@@ -10,7 +12,7 @@
 #include "effect_quarter_beat_14.h"
 
 
-#define EFFECTS_TOTAL 6
+#define EFFECTS_TOTAL 7
 
 // List of effects
 #define PFX_MOVING_DOT 0
@@ -22,40 +24,42 @@
 #define PFX_QUARTER_BEAT_14 6
 
 
-extern CRGBArray<NUM_LEDS> leds;
+extern CRGBArray<2000> leds;
 
 class EffectsRunner
 {
 private:
     int currentEffect = PFX_QUARTER_BEAT_11;
-
+    int numberOfLeds = config.getNumLEDs();
 public:
+    void setup(){
+        numberOfLeds = config.getNumLEDs();
+    }
     void run()
     {
-        Serial.printf("Current effect %d\n", currentEffect);
         switch (currentEffect)
         {
         default:
         case PFX_MOVING_DOT:
-            EffectMovingDot::run(beatInfo, leds, NUM_LEDS);
+            EffectMovingDot::run(beatInfo, leds, numberOfLeds);
             break;
         case PFX_BLINK_RAINBOW:
-            EffectBlinkRainbow::run(beatInfo, leds, NUM_LEDS);
+            EffectBlinkRainbow::run(beatInfo, leds, numberOfLeds);
             break;
         case PFX_MOVING_DOT_SIMPLE:
-            EffectMovingDotSimple::run(beatInfo, leds, NUM_LEDS);
+            EffectMovingDotSimple::run(beatInfo, leds, numberOfLeds);
             break;
         case PFX_BEATING_RAINBOW_STRIPES:
-            EffectBeatingRainbowStripes::run(beatInfo, leds, NUM_LEDS);
+            EffectBeatingRainbowStripes::run(beatInfo, leds, numberOfLeds);
             break;
         case PFX_BREATH_CENTER:
-            EffectBreathCenter::run(beatInfo, leds, NUM_LEDS);
+            EffectBreathCenter::run(beatInfo, leds, numberOfLeds);
             break;
         case PFX_QUARTER_BEAT_11:
-            EffectQuarterBeat11::run(beatInfo, leds, NUM_LEDS);
+            EffectQuarterBeat11::run(beatInfo, leds, numberOfLeds);
             break;
         case PFX_QUARTER_BEAT_14:
-            EffectQuarterBeat14::run(beatInfo, leds, NUM_LEDS);
+            EffectQuarterBeat14::run(beatInfo, leds, numberOfLeds);
             break;
         }
     }

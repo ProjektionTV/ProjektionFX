@@ -17,7 +17,7 @@
 
 #include "e131sync.h"
 
-CRGBArray<NUM_LEDS> leds;
+CRGBArray<2000> leds;
 
 BeatInfo beatInfo;
 
@@ -32,8 +32,10 @@ void setup()
 
   setupMqtt(config.getMQTTHost());
 
-  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
+  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, config.getNumLEDs());
   FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
+
+  effectsRunner.setup();
 
 #ifdef ARTNET_ENABLED
   e131sync.setup();

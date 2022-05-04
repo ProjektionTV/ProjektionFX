@@ -3,6 +3,7 @@
 
 #include "e131/E131.h"
 #include "settings.h"
+#include "configuration.h"
 E131 e131;
 class E131Sync
 {
@@ -14,7 +15,7 @@ private:
 public:
     void setup()
     {
-        for (int universe = 0; universe <= ceil(NUM_LEDS / 170); universe++){
+        for (int universe = 0; universe <= ceil(config.getNumLEDs() / 170); universe++){
             e131.begin(E131_MULTICAST, universe + universeTX);
         }
         
@@ -40,7 +41,7 @@ public:
 
             // Serial.printf("looping e131 - %d %d\n", ceil(NUM_LEDS / MAX_PER_UNIVERSE), NUM_LEDS);
 
-            for (int universe = 0; universe <= ceil(NUM_LEDS / MAX_PER_UNIVERSE); universe++)
+            for (int universe = 0; universe <= ceil(config.getNumLEDs() / MAX_PER_UNIVERSE); universe++)
             {
                 // Serial.printf("Sending universe %d\n", universe + universeTX);
 
@@ -48,7 +49,7 @@ public:
                 {
                     int ledPos = i + (MAX_PER_UNIVERSE * (universe));
                     // Serial.printf(" - LED %d\n", ledPos);
-                    if (ledPos < NUM_LEDS)
+                    if (ledPos < config.getNumLEDs())
                     {
                         CRGB led = leds[ledPos];
                         e131.setRGB(i * 3, led.r, led.g, led.b);
