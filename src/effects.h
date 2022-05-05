@@ -9,55 +9,34 @@
 #include "effect_quarter_beat_11.h"
 #include "effect_quarter_beat_14.h"
 
-
-#define EFFECTS_TOTAL 6
-
-// List of effects
-#define PFX_MOVING_DOT 0
-#define PFX_BLINK_RAINBOW 1
-#define PFX_MOVING_DOT_SIMPLE 2
-#define PFX_BEATING_RAINBOW_STRIPES 3
-#define PFX_BREATH_CENTER 4
-#define PFX_QUARTER_BEAT_11 5
-#define PFX_QUARTER_BEAT_14 6
-
-
 extern CRGBArray<NUM_LEDS> leds;
+
+typedef void EffectFunction(BeatInfo&, CRGBSet, int);
 
 class EffectsRunner
 {
 private:
-    int currentEffect = PFX_QUARTER_BEAT_11;
+    int currentEffect = 0;
+    static constexpr const EffectFunction* effects[] = {
+        EffectMovingDot::run,
+        EffectBlinkRainbow::run,
+        EffectMovingDotSimple::run,
+        EffectBeatingRainbowStripes::run,
+        EffectBreathCenter::run,
+        EffectQuarterBeat11::run,
+        EffectQuarterBeat14::run,
+    };
+    int availableEffects(){
+        return sizeof(effects)/sizeof(*effects);
+    }
 
 public:
     void run()
     {
         Serial.printf("Current effect %d\n", currentEffect);
-        switch (currentEffect)
-        {
-        default:
-        case PFX_MOVING_DOT:
-            EffectMovingDot::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_BLINK_RAINBOW:
-            EffectBlinkRainbow::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_MOVING_DOT_SIMPLE:
-            EffectMovingDotSimple::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_BEATING_RAINBOW_STRIPES:
-            EffectBeatingRainbowStripes::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_BREATH_CENTER:
-            EffectBreathCenter::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_QUARTER_BEAT_11:
-            EffectQuarterBeat11::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_QUARTER_BEAT_14:
-            EffectQuarterBeat14::run(beatInfo, leds, NUM_LEDS);
-            break;
-        }
+
+        EffectFunction* effectFunction = effects[currentEffect];
+        effectFunction(beatInfo, leds, NUM_LEDS);
     }
     int getCurrentEffect()
     {
@@ -65,15 +44,18 @@ public:
     }
     void setEffect(int effect)
     {
-        if (effect >= 0 && effect < EFFECTS_TOTAL)
+        if (effect >= 0 && effect < availableEffects())
+        {
             currentEffect = effect;
+        }
     }
     void nextEffect()
     {
-        currentEffect = (currentEffect + 1) % EFFECTS_TOTAL;
+        currentEffect = (currentEffect + 1) % availableEffects();
     }
 };
 
 EffectsRunner effectsRunner;
+constexpr const EffectFunction* EffectsRunner::effects[];
 
 #endif // EFFECTS_H__
