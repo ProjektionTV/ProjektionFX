@@ -19,9 +19,9 @@ public:
             hue = random(255);
         }
 
-        for(int i=0; i<(NUM_LEDS/4);i++)
+        for(int i=0; i<(numLeds/4);i++)
         {
-            leds[i+(quarter*(NUM_LEDS/4))] = CHSV(hue, 255, 128);
+            leds[i+(quarter*(numLeds/4))] = CHSV(hue, 255, 128);
         }
     }
 };
