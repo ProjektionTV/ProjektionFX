@@ -1,9 +1,16 @@
 #include <Arduino.h>
+#if defined(ESP8266)
+ #include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
+#else
+#include <WiFi.h>
+#endif
+
 #include <FastLED.h>
 
-// #include <ESP8266WebServer.h>
 
-#include <ArduinoOTA.h>
+
+// #include "server.h"
+// // #include <ArduinoOTA.h>
 
 #include "BeatInfo.h"
 #include "settings.h"
@@ -13,9 +20,11 @@
 
 #include "effects.h"
 
-// #include "artnet.h"
+// // #include "artnet.h"
 
 #include "e131sync.h"
+
+#include "web.h"
 
 CRGBArray<2000> leds;
 
@@ -28,7 +37,7 @@ void setup()
 
   config.setupWifiPortal("ProjektionFX");
 
-  ArduinoOTA.begin();
+  // // ArduinoOTA.begin();
 
   setupMqtt(config.getMQTTHost());
 
@@ -37,7 +46,9 @@ void setup()
 
   effectsRunner.setup();
 
-#ifdef ARTNET_ENABLED
+  setupWebServer();
+
+#ifdef E131_ENABLED
   e131sync.setup();
 #endif
 }
@@ -46,7 +57,7 @@ void loop()
 {
   config.connectionGuard();
   loopMqtt();
-  ArduinoOTA.handle();
+  // ArduinoOTA.handle();
 
   beatInfo.loop();
 
@@ -54,7 +65,7 @@ void loop()
 
   FastLED.show();
 
-#ifdef ARTNET_ENABLED
+#ifdef E131_ENABLED
   e131sync.loop();
 #endif
 

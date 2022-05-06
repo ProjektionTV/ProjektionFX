@@ -9,14 +9,19 @@
 #include <FS.h>
 #include "settings.h"
 #include <ArduinoJson.h>
-#include <WiFiManager.h>
+
 
 #ifdef ESP32
 #include <SPIFFS.h>
 #endif
 
-
+#include <WiFiManager.h>
 WiFiManager wifiManager;
+
+#define WEBSERVER_H
+#include <ESPAsyncWebServer.h>
+
+
 
 inline void configCallback();
 

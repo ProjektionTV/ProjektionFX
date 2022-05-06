@@ -1,6 +1,8 @@
 #if !defined(__PROJECTIONFX_E131SYNC_H__)
 #define __PROJECTIONFX_E131SYNC_H__
 
+#ifdef E131_ENABLED
+
 #include "e131/E131.h"
 #include "settings.h"
 #include "configuration.h"
@@ -89,4 +91,5 @@ public:
 
 static E131Sync e131sync;
 
+#endif
 #endif // __PROJECTIONFX_E131SYNC_H__

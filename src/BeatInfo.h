@@ -1,11 +1,9 @@
-#pragma once
-
 #if !defined(BEAT_INFO_H__)
 #define BEAT_INFO_H__
 
 #include <Arduino.h>
 
-#endif // BEAT_INFO_H__
+
 
 class BeatInfo
 {
@@ -20,3 +18,5 @@ private:
     unsigned long time;
     double bpm = 120;
 };
+
+#endif // BEAT_INFO_H__
