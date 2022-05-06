@@ -10,7 +10,7 @@
 #include "effect_quarter_beat_14.h"
 
 
-#define EFFECTS_TOTAL 6
+#define EFFECTS_TOTAL 7
 
 // List of effects
 #define PFX_MOVING_DOT 0

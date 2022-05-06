@@ -11,7 +11,7 @@ public:
         static uint8_t oldQuarter = 0;
         FastLED.clearData();
         uint8_t quarter = beatInfo.animationFrame(4) / 250;
-        static u_int8_t hue = 0;
+        static uint8_t hue = 0;
         
         if(oldQuarter != quarter)
         {
