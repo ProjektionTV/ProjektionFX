@@ -12,6 +12,7 @@
 
 #define EFFECTS_TOTAL 10
 
+
 // List of effects
 #define PFX_MOVING_DOT 0
 #define PFX_BLINK_RAINBOW 1
