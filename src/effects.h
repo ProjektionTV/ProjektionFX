@@ -8,9 +8,9 @@
 #include "effect_breath_center.h"
 #include "effect_quarter_beat_11.h"
 #include "effect_quarter_beat_14.h"
+#include "effect_starburst.h"
 
-
-#define EFFECTS_TOTAL 6
+#define EFFECTS_TOTAL 10
 
 // List of effects
 #define PFX_MOVING_DOT 0
@@ -20,7 +20,9 @@
 #define PFX_BREATH_CENTER 4
 #define PFX_QUARTER_BEAT_11 5
 #define PFX_QUARTER_BEAT_14 6
-
+#define PFX_ILJA1 7
+#define PFX_ILJA2 8
+#define PFX_STARBURST 9
 
 extern CRGBArray<NUM_LEDS> leds;
 
@@ -57,6 +59,12 @@ public:
         case PFX_QUARTER_BEAT_14:
             EffectQuarterBeat14::run(beatInfo, leds, NUM_LEDS);
             break;
+        case PFX_ILJA1:
+        case PFX_ILJA2:
+            nextEffect();
+            break;
+        case PFX_STARBURST:
+            EffectStarburst::run(beatInfo, leds, NUM_LEDS);
         }
     }
     int getCurrentEffect()
