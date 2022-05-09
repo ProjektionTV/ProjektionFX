@@ -16,21 +16,28 @@ extern BeatInfo beatInfo;
 
 typedef void EffectFunction(BeatInfo&, CRGBSet, int);
 
+#define EFFECT_ENTRY(NAME) { NAME::run, #NAME }
+#define EMPTY_EFFECT_ENTRY() { nullptr, "empty" }
+struct EffectEntry{
+    EffectFunction* effectFunction;
+    const char* effectName;
+};
+
 class EffectsRunner
 {
 private:
     int currentEffect = 0;
-    static constexpr const EffectFunction* effects[] = {
-        EffectMovingDot::run,
-        EffectBlinkRainbow::run,
-        EffectMovingDotSimple::run,
-        EffectBeatingRainbowStripes::run,
-        EffectBreathCenter::run,
-        EffectQuarterBeat11::run,
-        EffectQuarterBeat14::run,
-        nullptr, // PFX_ILJA1
-        nullptr, // PFX_ILJA2
-        EffectStarburst::run,
+    static constexpr const EffectEntry effects[] = {
+        EFFECT_ENTRY(EffectMovingDot),
+        EFFECT_ENTRY(EffectBlinkRainbow),
+        EFFECT_ENTRY(EffectMovingDotSimple),
+        EFFECT_ENTRY(EffectBeatingRainbowStripes),
+        EFFECT_ENTRY(EffectBreathCenter),
+        EFFECT_ENTRY(EffectQuarterBeat11),
+        EFFECT_ENTRY(EffectQuarterBeat14),
+        EMPTY_EFFECT_ENTRY(), // PFX_ILJA1
+        EMPTY_EFFECT_ENTRY(), // PFX_ILJA2
+        EFFECT_ENTRY(EffectStarburst),
     };
     int availableEffects(){
         return sizeof(effects)/sizeof(*effects);
@@ -39,9 +46,9 @@ private:
 public:
     void run()
     {
-        Serial.printf("Current effect %d\n", currentEffect);
+        Serial.printf("Current effect %s(%d)\n", effects[currentEffect].effectName, currentEffect);
 
-        EffectFunction* effectFunction = effects[currentEffect];
+        EffectFunction* effectFunction = effects[currentEffect].effectFunction;
         if(effectFunction==nullptr){
             nextEffect();
         }else{
@@ -51,6 +58,10 @@ public:
     int getCurrentEffect()
     {
         return currentEffect;
+    }
+    const char* getCurrentEffectName()
+    {
+        return effects[currentEffect].effectName;
     }
     void setEffect(int effect)
     {
@@ -66,6 +77,6 @@ public:
 };
 
 EffectsRunner effectsRunner;
-constexpr const EffectFunction* EffectsRunner::effects[];
+constexpr const EffectEntry EffectsRunner::effects[];
 
 #endif // EFFECTS_H__
