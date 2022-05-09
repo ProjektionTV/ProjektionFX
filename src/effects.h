@@ -1,6 +1,7 @@
 #if !defined(EFFECTS_H__)
 #define EFFECTS_H__
 
+#include "BeatInfo.h"
 #include "effect_movingdot.h"
 #include "effect_blink_rainbow.h"
 #include "effect_movingdot_simple.h"
@@ -8,8 +9,10 @@
 #include "effect_breath_center.h"
 #include "effect_quarter_beat_11.h"
 #include "effect_quarter_beat_14.h"
+#include "effect_starburst.h"
 
 extern CRGBArray<NUM_LEDS> leds;
+extern BeatInfo beatInfo;
 
 typedef void EffectFunction(BeatInfo&, CRGBSet, int);
 
@@ -25,6 +28,9 @@ private:
         EffectBreathCenter::run,
         EffectQuarterBeat11::run,
         EffectQuarterBeat14::run,
+        nullptr, // PFX_ILJA1
+        nullptr, // PFX_ILJA2
+        EffectStarburst::run,
     };
     int availableEffects(){
         return sizeof(effects)/sizeof(*effects);
@@ -36,7 +42,11 @@ public:
         Serial.printf("Current effect %d\n", currentEffect);
 
         EffectFunction* effectFunction = effects[currentEffect];
-        effectFunction(beatInfo, leds, NUM_LEDS);
+        if(effectFunction==nullptr){
+            nextEffect();
+        }else{
+            effectFunction(beatInfo, leds, NUM_LEDS);
+        }
     }
     int getCurrentEffect()
     {
