@@ -1,6 +1,7 @@
 #if !defined(EFFECTS_H__)
 #define EFFECTS_H__
 
+#include "BeatInfo.h"
 #include "effect_movingdot.h"
 #include "effect_blink_rainbow.h"
 #include "effect_movingdot_simple.h"
@@ -10,79 +11,72 @@
 #include "effect_quarter_beat_14.h"
 #include "effect_starburst.h"
 
-#define EFFECTS_TOTAL 10
-
-
-// List of effects
-#define PFX_MOVING_DOT 0
-#define PFX_BLINK_RAINBOW 1
-#define PFX_MOVING_DOT_SIMPLE 2
-#define PFX_BEATING_RAINBOW_STRIPES 3
-#define PFX_BREATH_CENTER 4
-#define PFX_QUARTER_BEAT_11 5
-#define PFX_QUARTER_BEAT_14 6
-#define PFX_ILJA1 7
-#define PFX_ILJA2 8
-#define PFX_STARBURST 9
-
 extern CRGBArray<NUM_LEDS> leds;
+extern BeatInfo beatInfo;
+
+typedef void EffectFunction(BeatInfo&, CRGBSet, int);
+
+#define EFFECT_ENTRY(NAME) { NAME::run, #NAME }
+#define EMPTY_EFFECT_ENTRY() { nullptr, "empty" }
+struct EffectEntry{
+    EffectFunction* effectFunction;
+    const char* effectName;
+};
 
 class EffectsRunner
 {
 private:
-    int currentEffect = PFX_QUARTER_BEAT_11;
+    int currentEffect = 0;
+    static constexpr const EffectEntry effects[] = {
+        EFFECT_ENTRY(EffectMovingDot),
+        EFFECT_ENTRY(EffectBlinkRainbow),
+        EFFECT_ENTRY(EffectMovingDotSimple),
+        EFFECT_ENTRY(EffectBeatingRainbowStripes),
+        EFFECT_ENTRY(EffectBreathCenter),
+        EFFECT_ENTRY(EffectQuarterBeat11),
+        EFFECT_ENTRY(EffectQuarterBeat14),
+        EMPTY_EFFECT_ENTRY(), // PFX_ILJA1
+        EMPTY_EFFECT_ENTRY(), // PFX_ILJA2
+        EFFECT_ENTRY(EffectStarburst),
+    };
+    int availableEffects(){
+        return sizeof(effects)/sizeof(*effects);
+    }
 
 public:
     void run()
     {
-        Serial.printf("Current effect %d\n", currentEffect);
-        switch (currentEffect)
-        {
-        default:
-        case PFX_MOVING_DOT:
-            EffectMovingDot::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_BLINK_RAINBOW:
-            EffectBlinkRainbow::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_MOVING_DOT_SIMPLE:
-            EffectMovingDotSimple::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_BEATING_RAINBOW_STRIPES:
-            EffectBeatingRainbowStripes::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_BREATH_CENTER:
-            EffectBreathCenter::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_QUARTER_BEAT_11:
-            EffectQuarterBeat11::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_QUARTER_BEAT_14:
-            EffectQuarterBeat14::run(beatInfo, leds, NUM_LEDS);
-            break;
-        case PFX_ILJA1:
-        case PFX_ILJA2:
+        Serial.printf("Current effect %s(%d)\n", effects[currentEffect].effectName, currentEffect);
+
+        EffectFunction* effectFunction = effects[currentEffect].effectFunction;
+        if(effectFunction==nullptr){
             nextEffect();
-            break;
-        case PFX_STARBURST:
-            EffectStarburst::run(beatInfo, leds, NUM_LEDS);
+        }else{
+            effectFunction(beatInfo, leds, NUM_LEDS);
         }
     }
     int getCurrentEffect()
     {
         return currentEffect;
     }
+    const char* getCurrentEffectName()
+    {
+        return effects[currentEffect].effectName;
+    }
     void setEffect(int effect)
     {
-        if (effect >= 0 && effect < EFFECTS_TOTAL)
+        if (effect >= 0 && effect < availableEffects())
+        {
             currentEffect = effect;
+        }
     }
     void nextEffect()
     {
-        currentEffect = (currentEffect + 1) % EFFECTS_TOTAL;
+        currentEffect = (currentEffect + 1) % availableEffects();
     }
 };
 
 EffectsRunner effectsRunner;
+constexpr const EffectEntry EffectsRunner::effects[];
 
 #endif // EFFECTS_H__

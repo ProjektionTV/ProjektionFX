@@ -3,7 +3,7 @@
 class EffectBlinkRainbow : Effect
 {
 public:
-    static void run(BeatInfo& beatInfo, CRGB leds[], int numLeds)
+    static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
         static unsigned long lastBeat;
         static unsigned long lastFade;
