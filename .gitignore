@@ -37,3 +37,4 @@
 build_output
 
 src/settings_custom.h
+node_modules

@@ -22,7 +22,9 @@
 
 // // #include "artnet.h"
 
+#ifdef E131_ENABLED
 #include "e131sync.h"
+#endif
 
 #include "web.h"
 

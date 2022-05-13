@@ -18,7 +18,7 @@
  */
 
 #include "E131.h"
-#ifdef E131_ENABLED
+
 #include <string.h>
 
 /* E1.17 ACN Packet Identifier */
@@ -489,4 +489,3 @@ void E131::dumpError(e131_error_t error)
         Serial.println(pwbuff->dmp_vector, HEX);
     }
 }
-#endif

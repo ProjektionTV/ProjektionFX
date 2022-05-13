@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjektionFX</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 8px;
+        }
+
+        div#main {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            background-color: #333;
+            padding: 8px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .label {
+            color: #999;
+            display: block;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            margin: 4px 0;
+        }
+
+        input {
+            font-size: 1.7em;
+            padding: 8px;
+            display: block;
+        }
+
+        .buttons {
+
+            display: flex;
+        }
+
+        .buttons>button {
+            flex: 1;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            text-align: center;
+            background-color: #444;
+            margin: 12px -8px;
+            padding: 4px;
+        }
+
+        .description {
+            font-size: 0.9em;
+            line-height: 1.5em;
+            color: #ccc;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        button {
+            border-radius: 4px;
+
+            border: none;
+            background-color: #77aaff;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+
+    <script>
+        function resetwifi(){
+            console.log("reset")
+            window.location = '/reset-wifi';
+        }
+    </script>
+</head>
+
+<body>
+    <div id="main">
+        <h2>ProjektionFX Konfiguration</h2>
+
+    <div class="card">
+        <h3>LED Konfiguration</h3>
+        <p class="label">Anzahl LEDs</p>
+        <input name="num_leds" placeholder="60" type="number" />
+
+        <h3>WLAN Einstellungen</h3>
+
+        <button onclick="resetwifi()">WLAN zurücksetzen</button>
+        <p class="description">
+            Die gespeicherten WLAN-Einstellungen werden zurückgesetzt. ProjektionFX startet neu und öffnet ein
+            'ProjektionFX' WLAN, in dem du deine Einstellungen erneut setzen kannst.
+        </p>
+
+
+    </div>
+    <div class="buttons">
+        <button style="background-color: #119900;">Speichern</button>
+    </div>
+
+    </div>
+
+</body>
+
+</html>
