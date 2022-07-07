@@ -10,6 +10,8 @@
 #include "effect_quarter_beat_11.h"
 #include "effect_quarter_beat_14.h"
 #include "effect_starburst.h"
+#include "effect_bouncing_comet.h"
+#include "effect_dancing_spotlights.h"
 
 extern CRGBArray<NUM_LEDS> leds;
 extern BeatInfo beatInfo;
@@ -38,6 +40,8 @@ private:
         EMPTY_EFFECT_ENTRY(), // PFX_ILJA1
         EMPTY_EFFECT_ENTRY(), // PFX_ILJA2
         EFFECT_ENTRY(EffectStarburst),
+        EFFECT_ENTRY(EffectBouncingComet),
+        EFFECT_ENTRY(EffectDancingSpotlights),
     };
     int availableEffects(){
         return sizeof(effects)/sizeof(*effects);
