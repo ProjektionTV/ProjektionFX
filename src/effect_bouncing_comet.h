@@ -15,8 +15,8 @@ public:
         // turn off all leds
         leds = CRGB::Black;
 
-        // width of the comet, 10% of numleds
-        int width = numLeds / 10;
+        // width of the comet
+        int width = numLeds / 6;
 
         // position of the comet
         int position = map(frame < 500 ? frame : 999 - frame, 0, 499, 0, numLeds - 1); // up and down ramp
