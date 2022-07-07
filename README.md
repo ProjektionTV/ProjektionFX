@@ -69,7 +69,7 @@ Wenn du ProjektionFX erfolgreich aufgespielt hast, dann öffnet dieser (wenn er 
 
 1. Verbinde dich mit dem WLAN **ProjektionFX**, am besten von deinem Handy oder Tablet aus
 2. Es öffnet sich eine Seite, um die Konfiguration auszuführen.  
-   Wenn nicht: öffne in deinem Browser die Adresse [http://192.186.4.1](http://192.186.4.1)
+   Wenn nicht: öffne in deinem Browser die Adresse [http://192.168.4.1](http://192.168.4.1)
 3. Klicke auf **Configure WiFi**:
    1. Wähle **dein WLAN** aus
    2. Trage dein **Passwort** ein
