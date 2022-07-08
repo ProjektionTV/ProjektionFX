@@ -28,7 +28,7 @@ public:
         } 
 
         // turn on all spots with current color
-        for (int i=0; i<numLeds-1; i++)
+        for (int i=0; i<numLeds; i++)
         {
             if (i % 5 == color)
             {
