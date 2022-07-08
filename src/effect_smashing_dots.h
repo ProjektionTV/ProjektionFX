@@ -23,8 +23,9 @@ public:
         int brightness = ramp*ramp - 1; // square to fade quickly from 255 to 15
 
         // colors
-        CHSV barColor = CHSV(0, 0, 32); // white
-        CHSV dotColor = CHSV(map(beatInfo.animationFrame(32), 0, 999, 0, 255), 255, brightness);
+        int byteFrame = map(beatInfo.animationFrame(16), 0, 999, 0, 255);
+        CHSV barColor = CHSV(byteFrame, 255, 40);
+        CHSV dotColor = CHSV((byteFrame + 128) % 256, 255, brightness);
 
         // draw the bars
         int barAmplitude = width/2;
