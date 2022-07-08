@@ -12,6 +12,7 @@
 #include "effect_starburst.h"
 #include "effect_bouncing_comet.h"
 #include "effect_dancing_spotlights.h"
+#include "effect_smashing_dots.h"
 
 extern CRGBArray<NUM_LEDS> leds;
 extern BeatInfo beatInfo;
@@ -42,6 +43,7 @@ private:
         EFFECT_ENTRY(EffectStarburst),
         EFFECT_ENTRY(EffectBouncingComet),
         EFFECT_ENTRY(EffectDancingSpotlights),
+        EFFECT_ENTRY(EffectSmashingDots),
     };
     int availableEffects(){
         return sizeof(effects)/sizeof(*effects);
