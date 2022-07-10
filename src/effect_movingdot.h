@@ -40,7 +40,7 @@ public:
         length = 10;
         for (int i = 0; i < length; i++)
         {
-            int p = (ledPos + i) % numLeds;
+            int p = (redLed + i) % numLeds;
             leds[p] = blend(leds[redLed], CRGB::Red, 30);
             leds[p].fadeToBlackBy((i) * (255. / length));
         }
