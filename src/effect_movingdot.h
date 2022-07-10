@@ -25,7 +25,7 @@ public:
 
         for (int i = 0; i < length; i++)
         {
-            int p = (ledPos + i > numLeds - 1) ? ledPos - (numLeds - 1) + i : ledPos + i;
+            int p = (ledPos + i) % numLeds;
             leds[p] = color1;
             leds[p].fadeToBlackBy((length - i) * (255. / length));
         }
@@ -40,7 +40,7 @@ public:
         length = 10;
         for (int i = 0; i < length; i++)
         {
-            int p = (redLed + i > numLeds - 1) ? redLed - (numLeds - 1) + i : redLed + i;
+            int p = (ledPos + i) % numLeds;
             leds[p] = blend(leds[redLed], CRGB::Red, 30);
             leds[p].fadeToBlackBy((i) * (255. / length));
         }
