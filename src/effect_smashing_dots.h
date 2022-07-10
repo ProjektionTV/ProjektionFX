@@ -19,12 +19,12 @@ public:
         int width = numLeds / 10;
 
         // brightness of the dots
-        int ramp = map(frame < 500 ? 499 - frame : 999 - frame, 0, 499, 4, 16); // negative sawtooth for flashing
-        int brightness = ramp*ramp - 1; // square to fade quickly from 255 to 15
+        int ramp = map(frame < 500 ? 499 - frame : 999 - frame, 0, 499, 8, 16); // negative sawtooth for flashing
+        int brightness = ramp*ramp - 1; // square to fade quickly from 255 to 63
 
         // colors
         int byteFrame = map(beatInfo.animationFrame(16), 0, 999, 0, 255);
-        CHSV barColor = CHSV(byteFrame, 255, 40);
+        CHSV barColor = CHSV(byteFrame, 255, 100);
         CHSV dotColor = CHSV((byteFrame + 128) % 256, 255, brightness);
 
         // draw the bars
