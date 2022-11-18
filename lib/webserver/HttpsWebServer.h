@@ -19,6 +19,7 @@ class HttpsWebServer{
     SSLCert * cert;
     HTTPSServer * secureServer;
   public:
+    void setupDNS();
     void generateSSLCert();
     void registerDelayRoute();
     void registerDefaultRoute();

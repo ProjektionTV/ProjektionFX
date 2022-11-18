@@ -1,5 +1,17 @@
 #include <HttpsWebServer.h>
 
+#include <ESPmDNS.h>
+
+void HttpsWebServer::setupDNS(){
+      if (!MDNS.begin("projektionfx")) {
+        Serial.println("Error setting up MDNS responder!");
+        while(1) {
+            delay(1000);
+        }
+    }
+    Serial.println("mDNS responder started");
+}
+
 void HttpsWebServer::generateSSLCert(){
   Serial.println("Creating certificate... (takes ~30s)");
   
@@ -8,7 +20,7 @@ void HttpsWebServer::generateSSLCert(){
   int createCertResult = createSelfSignedCert(
     *cert,
     SSLKeySize::KEYSIZE_2048,
-    "CN=web.local,O=acme,C=DE");
+    "CN=projektionfx.local,O=acme,C=DE");
   
   if (createCertResult != 0) {
     Serial.printf("Error generating certificate");

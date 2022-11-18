@@ -40,6 +40,7 @@ void setup()
   FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
 
   webServer.begin();
+  https.setupDNS();
   https.generateSSLCert();
   https.start();
 
