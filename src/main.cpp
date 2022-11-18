@@ -35,6 +35,8 @@ void setup()
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
   FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
 
+  webServer.begin();
+
 #ifdef ARTNET_ENABLED
   e131sync.setup();
 #endif
@@ -43,12 +45,13 @@ void setup()
 void loop()
 {
   config.connectionGuard();
+  config.webplayer();
   loopMqtt();
   ArduinoOTA.handle();
 
   beatInfo.loop();
 
-  effectsRunner.run();
+  //effectsRunner.run();
 
   FastLED.show();
 

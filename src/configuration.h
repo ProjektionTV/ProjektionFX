@@ -15,6 +15,16 @@
 #include <SPIFFS.h>
 #endif
 
+// Set web server port number to 80
+WiFiServer webServer(80);
+// Variable to store the HTTP request
+String header;
+// Current time
+unsigned long currentTime = millis();
+// Previous time
+unsigned long previousTime = 0; 
+// Define timeout time in milliseconds (example: 2000ms = 2s)
+const long timeoutTime = 2000;
 
 WiFiManager wifiManager;
 
@@ -80,9 +90,11 @@ public:
 
         Serial.println("Configuration completed!");
     }
+    
     const char *getMQTTHost() { return mqttHost.c_str(); };
     const char *getMQTTUser() { return mqttUser.c_str(); };
     const char *getMQTTPassword() { return mqttPassword.c_str(); };
+    
     void enableSave()
     {
         this->shouldSave = true;
@@ -107,8 +119,92 @@ public:
                 Serial.print('.');
                 delay(1000);
             }
+            //server.begin();
             Serial.println(" connected.");
+            Serial.println(WiFi.localIP());
         }       
+    }
+
+    void webplayer()
+    {
+        WiFiClient webClient = webServer.available();   // Listen for incoming clients
+
+        if (webClient) {                             // If a new client connects,
+            currentTime = millis();
+            previousTime = currentTime;
+            Serial.println("New Client.");          // print a message out in the serial port
+            String currentLine = "";                // make a String to hold incoming data from the client
+            while (webClient.connected() && currentTime - previousTime <= timeoutTime)  // loop while the client's connected
+            {
+                currentTime = millis();
+                // if there's bytes to read from the client,
+                if (webClient.available())
+                {      
+                    char c = webClient.read();             // read a byte, then
+                    Serial.write(c);                    // print it out the serial monitor
+                    header += c;
+                    if (c == '\n')                    // if the byte is a newline character
+                    {
+                        // if the current line is blank, you got two newline characters in a row.
+                        // that's the end of the client HTTP request, so send a response:
+                        if (currentLine.length() == 0)
+                        {
+                            // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
+                            // and a content-type so the client knows what's coming, then a blank line:
+                            webClient.println("HTTP/1.1 200 OK");
+                            webClient.println("Content-type:text/html");
+                            webClient.println("Connection: close");
+                            webClient.println();
+
+                            webClient.println("<!DOCTYPE html><html>");
+                            webClient.println("<head>");
+                            webClient.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+                            webClient.println("<script src=\"https://player.twitch.tv/js/embed/v1.js\"></script>");
+                            webClient.println("</head>");
+                            webClient.println("<body>");
+                            webClient.println("<div id=\"twitchplayer\"></div>");
+                            webClient.println("<br>");
+                            webClient.println("<div id=\"delay\"></div>");
+                            webClient.println("<script type=\"text/javascript\">");
+                            webClient.println("    //countdown function is evoked when page is loaded");
+                            webClient.println("    function countdown() {");
+                            webClient.println("        document.getElementById(\"delay\").innerHTML = player.getPlaybackStats().hlsLatencyBroadcaster;");
+                            webClient.println("    }");
+                            webClient.println("    var options = {");
+                            webClient.println("        width: 1280,");
+                            webClient.println("        height: 720,");
+                            webClient.println("        channel: \"projektiontv\",");
+                            webClient.println("        parent: ['esp32-192.168.0.101.local']");
+                            webClient.println("    };");
+                            webClient.println("    var player = new Twitch.Player(\"twitchplayer\", options);");
+                            webClient.println("    player.setVolume(0.5);");
+                            webClient.println("    setInterval(countdown, 5000);");
+                            webClient.println("</script>");
+                            webClient.println("</body>");
+                            webClient.println("</html>");
+
+                            // The HTTP response ends with another blank line
+                            webClient.println();
+                            // Break out of the while loop
+                            break;
+                        }
+                        else { // if you got a newline, then clear currentLine
+                            currentLine = "";
+                        }
+                    }
+                    else if (c != '\r') {  // if you got anything else but a carriage return character,
+                        currentLine += c;      // add it to the end of the currentLine
+                    }
+                }
+            }
+
+            // Clear the header variable
+            header = "";
+            // Close the connection
+            webClient.stop();
+            Serial.println("Client disconnected.");
+            Serial.println("");
+        }
     }
 
 private:
@@ -146,6 +242,7 @@ private:
         configFile.close();
         // end save
     }
+
     inline void setupSPIFF()
     {
         Serial.println("mounting FS...");
