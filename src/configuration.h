@@ -72,6 +72,8 @@ public:
             ESP.restart();
         }
 
+        validateMqttConfiguration(mqttHost, mqttUser, mqttPassword);
+
         if (shouldSave)
         {
             Serial.println("Saving Config");
@@ -116,6 +118,37 @@ private:
     String mqttHost = MQTT_HOST;
     String mqttUser = MQTT_USER;
     String mqttPassword = MQTT_PASSWORD;
+
+
+    inline boolean canMqttConnect(String mqttHost, String mqttUser, String mqttPassword){
+        WiFiClient espClient;
+        PubSubClient client(espClient);
+        client.setServer(mqttHost.c_str(), 1883);
+
+        // Create a random client ID
+        String clientId = "PROJEKTIONFX-";
+        clientId += String(random(0xffff), HEX);
+        clientId += "-tryconnect";
+
+        // Attempt to connect
+        if (!client.connect(clientId.c_str(), mqttUser.c_str(), mqttPassword.c_str())){
+            return false;
+        }
+
+        client.disconnect();
+        return true;
+    }
+
+    inline void validateMqttConfiguration(String mqttHost, String mqttUser, String mqttPassword){
+        Serial.print("try connect to MQTT ...");
+        if(!canMqttConnect(mqttHost, mqttUser, mqttPassword)){
+            Serial.println(" failed :(");
+            Serial.println("Resetting WiFi Settings -> Could not connect to MQTT Host. Check host, username and password.");
+            wifiManager.resetSettings();
+            ESP.restart();
+        }
+        Serial.println(" success :)");
+    }
 
     inline void save()
     {
