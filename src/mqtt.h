@@ -46,7 +46,7 @@ void reconnect()
   }
 }
 
-void callback(char *topic, byte *payload, unsigned int length)
+void processBpm(char *topic, byte *payload, unsigned int length)
 {
   if (strcmp(topic, "projektiontv/stream/dj/songinfo/bpm") == 0)
   {
@@ -57,6 +57,41 @@ void callback(char *topic, byte *payload, unsigned int length)
     Serial.printf("MQTT Received BPM: %f\n", bpm);
     beatInfo.setBPM(bpm);
   }
+}
+
+void processNames(char *topic, byte *payload, unsigned int length)
+{
+  if (strcmp(topic, "projektiontv/stream/dj/songinfo/names") == 0)
+  {
+    DynamicJsonDocument doc(256);
+    deserializeJson(doc, payload, length);
+
+    const char* artistname = doc["artistname"];
+    const char* songname = doc["songname"];
+    Serial.printf("MQTT Received Names: %s - %s\n", artistname, songname);
+  }
+}
+
+void processEffect(char *topic, byte *payload, unsigned int length)
+{
+  if (strcmp(topic, "projektiontv/stream/dj/effect") == 0)
+  {
+    DynamicJsonDocument doc(256);
+    deserializeJson(doc, payload, length);
+
+    uint8_t number = doc["number"];
+    const char* name = doc["name"];
+    uint64_t timestamp_us = doc["timestamp_us"];
+
+    Serial.printf("MQTT Received Effect: number=%d name=%s timestamp_us=%d \n", number, name, timestamp_us);
+  }
+}
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  processBpm(topic, payload, length);
+  processNames(topic, payload, length);
+  processEffect(topic, payload, length);
 }
 
 void setupMqtt(const char *host)
