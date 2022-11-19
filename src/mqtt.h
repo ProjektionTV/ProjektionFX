@@ -17,8 +17,16 @@ PubSubClient client(espClient);
 const char *mqttUser;
 const char *mqttPassword;
 
+const char *topicBpm = "projektiontv/stream/dj/songinfo/bpm";
+const char *topicNames = "projektiontv/stream/dj/songinfo/names";
+const char *topicEffect = "projektiontv/stream/dj/effect";
+
 void callback(char *topic, byte *payload, unsigned int length);
 void reconnect();
+
+int8_t nextEffectNumber = 0;
+const char* nextEffectName;
+int64_t nextEffectTimestampUs = 0;
 
 void reconnect()
 {
@@ -33,7 +41,9 @@ void reconnect()
     if (client.connect(clientId.c_str(), config.getMQTTUser(), config.getMQTTPassword()))
     {
       Serial.println("connected");
-      client.subscribe("projektiontv/stream/dj/songinfo/bpm");
+      client.subscribe(topicBpm);
+      client.subscribe(topicNames);
+      client.subscribe(topicEffect);
     }
     else
     {
@@ -48,7 +58,7 @@ void reconnect()
 
 void processBpm(char *topic, byte *payload, unsigned int length)
 {
-  if (strcmp(topic, "projektiontv/stream/dj/songinfo/bpm") == 0)
+  if (strcmp(topic, topicBpm) == 0)
   {
     DynamicJsonDocument doc(256);
     deserializeJson(doc, payload, length);
@@ -61,7 +71,7 @@ void processBpm(char *topic, byte *payload, unsigned int length)
 
 void processNames(char *topic, byte *payload, unsigned int length)
 {
-  if (strcmp(topic, "projektiontv/stream/dj/songinfo/names") == 0)
+  if (strcmp(topic, topicNames) == 0)
   {
     DynamicJsonDocument doc(256);
     deserializeJson(doc, payload, length);
@@ -74,16 +84,16 @@ void processNames(char *topic, byte *payload, unsigned int length)
 
 void processEffect(char *topic, byte *payload, unsigned int length)
 {
-  if (strcmp(topic, "projektiontv/stream/dj/effect") == 0)
+  if (strcmp(topic, topicEffect) == 0)
   {
     DynamicJsonDocument doc(256);
     deserializeJson(doc, payload, length);
 
-    uint8_t number = doc["number"];
-    const char* name = doc["name"];
-    uint64_t timestamp_us = doc["timestamp_us"];
+    nextEffectNumber = doc["number"];
+    nextEffectName = doc["name"];
+    nextEffectTimestampUs = doc["timestamp_us"];
 
-    Serial.printf("MQTT Received Effect: number=%d name=%s timestamp_us=%d \n", number, name, timestamp_us);
+    Serial.printf("MQTT Received Effect: number=%d name=%s timestamp_us=%d \n", nextEffectNumber, nextEffectName, nextEffectTimestampUs);
   }
 }
 

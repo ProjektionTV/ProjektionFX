@@ -1,7 +1,11 @@
-#include <HttpsWebServer.h>
+#include <https_web_server.h>
 
 #include <ESPmDNS.h>
 
+#include <sstream>
+#include <cstdint>
+
+uint64_t latestLatency = 0;
 void HttpsWebServer::setupDNS(){
       if (!MDNS.begin("projektionfx")) {
         Serial.println("Error setting up MDNS responder!");
@@ -40,8 +44,11 @@ void HttpsWebServer::registerDelayRoute(){
       return;
     }
 
-    Serial.print("Stream latency is now ");
-    Serial.println(requestLatency.c_str());
+    Serial.print("Current stream latency: ");
+    Serial.print(requestLatency.c_str());
+    Serial.println("ms");
+    std::istringstream iss(requestLatency);
+    iss >> latestLatency;
   });
   secureServer->registerNode(nodeStreamDelay);
 }
@@ -103,4 +110,5 @@ boolean  HttpsWebServer::start(){
 
 void HttpsWebServer::loop(){
   secureServer->loop();
+  this->streamLatency = latestLatency;
 }

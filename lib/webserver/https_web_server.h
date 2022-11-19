@@ -18,6 +18,7 @@ class HttpsWebServer{
   private:
     SSLCert * cert;
     HTTPSServer * secureServer;
+    
   public:
     void setupDNS();
     void generateSSLCert();
@@ -25,6 +26,7 @@ class HttpsWebServer{
     void registerDefaultRoute();
     boolean start();
     void loop();
+    uint64_t streamLatency = 0;
 };
 
 #endif

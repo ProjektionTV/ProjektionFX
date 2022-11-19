@@ -39,7 +39,7 @@ double BeatInfo::millisPerBeat()
 
 void BeatInfo::setBPM(double bpm){
     this->bpm = bpm;
-    Serial.printf("BPM set to: %f", bpm);
+    Serial.printf("BPM set to: %f\n", bpm);
 }
 
 
