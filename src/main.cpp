@@ -17,9 +17,13 @@
 
 #include "e131sync.h"
 
+#include <HttpsWebServer.h>
+
 CRGBArray<NUM_LEDS> leds;
 
 BeatInfo beatInfo;
+
+HttpsWebServer https;
 
 void setup()
 {
@@ -36,6 +40,9 @@ void setup()
   FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
 
   webServer.begin();
+  https.setupDNS();
+  https.generateSSLCert();
+  https.start();
 
 #ifdef ARTNET_ENABLED
   e131sync.setup();
@@ -50,6 +57,8 @@ void loop()
   ArduinoOTA.handle();
 
   beatInfo.loop();
+
+  https.loop();
 
   //effectsRunner.run();
 
