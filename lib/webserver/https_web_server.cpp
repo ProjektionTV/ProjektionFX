@@ -81,7 +81,7 @@ void HttpsWebServer::registerDefaultRoute(){
     s += ("    var options = {\r\n");
     s += ("        width: 1280,\r\n");
     s += ("        height: 720,\r\n");
-    s += ("        channel: 'lastmiles',\r\n");
+    s += ("        channel: 'projektiontv',\r\n");
     s += ("    };\r\n");
     s += ("    var player = new Twitch.Player('twitchplayer', options);\r\n");
     s += ("    player.setVolume(0.5);\r\n");
