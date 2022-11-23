@@ -9,7 +9,10 @@
 #include "effect_breath_center.h"
 #include "effect_quarter_beat_11.h"
 #include "effect_quarter_beat_14.h"
+#include "effect_strobo_rainbow.h"
+#include "effect_blackout.h"
 #include "effect_starburst.h"
+#include "effect_moving_snake.h"
 #include "effect_bouncing_comet.h"
 #include "effect_dancing_spotlights.h"
 #include "effect_smashing_dots.h"
@@ -38,9 +41,10 @@ private:
         EFFECT_ENTRY(EffectBreathCenter),
         EFFECT_ENTRY(EffectQuarterBeat11),
         EFFECT_ENTRY(EffectQuarterBeat14),
-        EMPTY_EFFECT_ENTRY(), // PFX_ILJA1
-        EMPTY_EFFECT_ENTRY(), // PFX_ILJA2
+        EFFECT_ENTRY(EffectStroboRainbow), // PFX_ILJA1
+        EFFECT_ENTRY(EffectBlackOut), // PFX_ILJA2
         EFFECT_ENTRY(EffectStarburst),
+        EFFECT_ENTRY(EffectMovingSnake),
         EFFECT_ENTRY(EffectBouncingComet),
         EFFECT_ENTRY(EffectDancingSpotlights),
         EFFECT_ENTRY(EffectSmashingDots),
