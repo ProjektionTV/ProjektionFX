@@ -65,18 +65,21 @@ void loop()
 
   // Check time till next effect if given
   int64_t currentMicros = NTP.micros();
-  int64_t microsTillNextEffect = currentMicros - (nextEffectTimestampUs + https.streamLatency);
-  if (nextEffectTimestampUs > 0 && microsTillNextEffect >= 0 && microsTillNextEffect < 10)
+    int64_t microsTillNextEffect = currentMicros - (nextEffectTimestampUs + (https.streamLatency * 1000));
+  if (nextEffectTimestampUs > 0 && microsTillNextEffect >= 0)
   {
+    Serial.printf("Set next Effect: %d\n", nextEffectNumber);
+    nextEffectTimestampUs = -1;
     effectsRunner.setEffect(nextEffectNumber);
   }
-  else
+  /*else
   {
     EVERY_N_SECONDS(30)
     {
       effectsRunner.nextEffect();
     };
-  }
+  }*/
+
   // Update the time for the beat calculation
   beatInfo.loop();
   effectsRunner.run();
