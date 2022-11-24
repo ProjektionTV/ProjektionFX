@@ -13,6 +13,7 @@
 #include "effects.h"
 #include "artnet.h"
 #include "e131sync.h"
+#include "version.h"
 
 CRGBArray<NUM_LEDS> leds;
 
@@ -29,7 +30,7 @@ void setup()
 {
 
   Serial.begin(115200);
-
+  Serial.printf("\n\nProjektionFX v%d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
   config.setupWifiPortal("ProjektionFX");
 
   ArduinoOTA.begin();
@@ -65,7 +66,7 @@ void loop()
 
   // Check time till next effect if given
   int64_t currentMicros = NTP.micros();
-    int64_t microsTillNextEffect = currentMicros - (nextEffectTimestampUs + (https.streamLatency * 1000));
+  int64_t microsTillNextEffect = currentMicros - (nextEffectTimestampUs + (https.streamLatency * 1000));
   if (nextEffectTimestampUs > 0 && microsTillNextEffect >= 0)
   {
     Serial.printf("Set next Effect: %d\n", nextEffectNumber);

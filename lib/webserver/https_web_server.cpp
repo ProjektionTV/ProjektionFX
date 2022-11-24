@@ -54,42 +54,45 @@ void HttpsWebServer::registerDelayRoute(){
 }
 
 void HttpsWebServer::registerDefaultRoute(){
-  ResourceNode * nodeRoot = new ResourceNode("/", "GET", [](HTTPRequest * req, HTTPResponse * res){
+  ResourceNode * nodeRoot = new ResourceNode("/", "GET", [](HTTPRequest * req, HTTPResponse * res)
+  {
     res->setHeader("Content-Type", "text/html");
-    String s;
-    s += ("<!DOCTYPE html><html>\r\n");
-    s += ("<head>\r\n");
-    s += ("<meta name='viewport' content='width=device-width, initial-scale=1'>\r\n");
-    s += ("<script src='https://player.twitch.tv/js/embed/v1.js'></script>\r\n");
-    s += ("</head>\r\n");
-    s += ("<body>\r\n");
-    s += ("<div id='twitchplayer'></div>\r\n");
-    s += ("<br>\r\n");
-    s += ("<div id='delay'></div>\r\n");
-    s += ("<script type='text/javascript'>\r\n");
-    s += ("    //countdown function is evoked when page is loaded\r\n");
-    s += ("    var lastLatency = 0;\n");
-    s += ("    function latencyCheck() {\r\n");
-    s += ("        var latency = parseInt(player.getPlaybackStats().hlsLatencyBroadcaster * 1000)\r\n");
-    s += ("        document.getElementById('delay').innerHTML = latency;\r\n");
-    s += ("        if (lastLatency != latency)\r\n");
-    s += ("        {\r\n");
-    s += ("            fetch('/delay?latency='+latency);\r\n");
-    s += ("            lastLatency = latency;\r\n");
-    s += ("        }\r\n");
-    s += ("    }\r\n");
-    s += ("    var options = {\r\n");
-    s += ("        width: 1280,\r\n");
-    s += ("        height: 720,\r\n");
-    s += ("        channel: 'projektiontv',\r\n");
-    s += ("    };\r\n");
-    s += ("    var player = new Twitch.Player('twitchplayer', options);\r\n");
-    s += ("    player.setVolume(0.5);\r\n");
-    s += ("    setInterval(latencyCheck, 1000);\r\n");
-    s += ("</script>\r\n");
-    s += ("</body>\r\n");
-    s += ("</html>\r\n");
-    s += "\r\n\r\n";
+    String s = R"(
+      <!DOCTYPE html>
+      <html>
+          <head>
+              <meta name='viewport' content='width=device-width, initial-scale=1'>
+              <script src='https://player.twitch.tv/js/embed/v1.js'></script>
+          </head>
+          <body>
+              <div id='twitchplayer'></div>
+              <br>
+              <div id='delay'></div>
+              <script type='text/javascript'>
+                  //countdown function is evoked when page is loaded
+                  var lastLatency = 0;
+                  function latencyCheck()
+                  {
+                      var latency = parseInt(player.getPlaybackStats().hlsLatencyBroadcaster * 1000);
+                      document.getElementById('delay').innerHTML = latency;
+                      if (lastLatency != latency)
+                      {
+                          fetch('/delay?latency='+latency);
+                          lastLatency = latency;
+                      }
+                  }
+                  var options = {
+                      width: 1280,
+                      height: 720,
+                      channel: 'hotbeatstv',
+                  };
+                  var player = new Twitch.Player('twitchplayer', options);
+                  player.setVolume(0.5);
+                  setInterval(latencyCheck, 1000);
+              </script>
+          </body>
+      </html>
+      )";
     res->println(s);
   });
   secureServer->registerNode(nodeRoot);
