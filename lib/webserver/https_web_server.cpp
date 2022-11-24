@@ -84,7 +84,7 @@ void HttpsWebServer::registerDefaultRoute(){
                   var options = {
                       width: 1280,
                       height: 720,
-                      channel: 'hotbeatstv',
+                      channel: 'projektiontv',
                   };
                   var player = new Twitch.Player('twitchplayer', options);
                   player.setVolume(0.5);
