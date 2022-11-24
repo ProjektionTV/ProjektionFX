@@ -5,13 +5,13 @@
 #include "settings_custom.h"
 #else
 
-#define MQTT_HOST "mqtt.example.com"
+#define MQTT_HOST "cb.twitchbridge.de"
 #define MQTT_USER "user"
 #define MQTT_PASSWORD "password"
 
 #ifndef LED_PIN
     #ifdef ESP32
-    #define LED_PIN 4
+    #define LED_PIN 5
     #else
     #define LED_PIN D4
     #endif
