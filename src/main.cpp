@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
+#include <printBuildInfos.h>
 
 // #include <ESP8266WebServer.h>
 
@@ -25,6 +26,7 @@ void setup()
 {
 
   Serial.begin(115200);
+  printBuildInfos();
 
   config.setupWifiPortal("ProjektionFX");
 

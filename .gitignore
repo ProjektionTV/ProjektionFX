@@ -37,3 +37,4 @@
 build_output
 
 src/settings_custom.h
+src/build_infos.h
