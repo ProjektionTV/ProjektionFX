@@ -17,7 +17,7 @@
 #include "effect_dancing_spotlights.h"
 #include "effect_smashing_dots.h"
 
-extern CRGBArray<NUM_LEDS> leds;
+extern CRGBArray<MAX_NUM_LEDS> leds;
 extern BeatInfo beatInfo;
 
 typedef void EffectFunction(BeatInfo&, CRGBSet, int);
@@ -62,7 +62,7 @@ public:
         if(effectFunction==nullptr){
             nextEffect();
         }else{
-            effectFunction(beatInfo, leds, NUM_LEDS);
+            effectFunction(beatInfo, leds, config.getNumLeds());
         }
     }
     int getCurrentEffect()

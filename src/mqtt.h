@@ -10,6 +10,7 @@
 #include <BeatInfo.h>
 
 extern BeatInfo beatInfo;
+extern Configuration config;
 
 WiFiClient espClient;
 PubSubClient client(espClient);

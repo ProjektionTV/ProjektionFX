@@ -11,11 +11,10 @@
 #include "mqtt.h"
 #include "configuration.h"
 #include "effects.h"
-#include "artnet.h"
 #include "e131sync.h"
 #include "version.h"
 
-CRGBArray<NUM_LEDS> leds;
+CRGBArray<MAX_NUM_LEDS> leds;
 
 BeatInfo beatInfo;
 
@@ -26,25 +25,34 @@ extern const char* nextEffectName;
 extern int64_t nextEffectTimestampUs;
 extern uint64_t streamLatency;
 
+extern Configuration config;
+
 void setup()
 {
-
   Serial.begin(115200);
   Serial.printf("\n\nProjektionFX v%d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
-  config.setupWifiPortal("ProjektionFX");
 
+  bool configPortal = false;
+  pinMode(0, INPUT);
+  Serial.println("Press BootButton for ConfigPortal.");
+  delay(2500);
+  if (!digitalRead(0))
+      configPortal = true;
+
+  config.setupWifiPortal("ProjektionFX", configPortal);
+  
   ArduinoOTA.begin();
 
   setupMqtt(config.getMQTTHost());
 
-  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
-  FastLED.setMaxPowerInVoltsAndMilliamps(5, LED_MAX_MILLIAMP);
+  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, config.getNumLeds());
+  FastLED.setMaxPowerInVoltsAndMilliamps(5, config.getMaxMilliamps());
 
   https.setupDNS();
   https.generateSSLCert();
   https.start();
 
-#ifdef ARTNET_ENABLED
+#ifdef E131_ENABLED
   e131sync.setup();
 #endif
 
@@ -86,7 +94,7 @@ void loop()
   effectsRunner.run();
   FastLED.show();
 
-#ifdef ARTNET_ENABLED
+#ifdef E131_ENABLED
   e131sync.loop();
 #endif
   /*

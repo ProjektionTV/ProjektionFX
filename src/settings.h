@@ -16,13 +16,11 @@
     #define LED_PIN D4
     #endif
 #endif
-#define NUM_LEDS 60
+#define MAX_NUM_LEDS 1024
+#define NUM_LEDS 144
 #define LED_MAX_MILLIAMP 500
 
-#define ARTNET_ENABLED
-#if defined(ARTNET_ENABLED)
-#define ARTNET_HOST "wled.home"
-#endif // ARTNET_ENABLED
+#define E131_ENABLED
 
 #define DEBUG_SERIAL true
 #endif
