@@ -1,32 +1,27 @@
 #ifndef __WEBSERVER__
 #define __WEBSERVER__
 
-#include <HTTPSServer.hpp>
-#include <SSLCert.hpp>
-#include <HTTPRequest.hpp>
-#include <HTTPResponse.hpp>
-
-using httpsserver::SSLCert;
-using httpsserver::SSLKeySize;
-using httpsserver::HTTPSServer;
-using httpsserver::ResourceNode;
-using httpsserver::ResourceParameters;
-using httpsserver::HTTPRequest;
-using httpsserver::HTTPResponse;
+#ifdef ARDUINO_ARCH_ESP8266
+#include <HttpsWebServerESP8266.h>
+#elif ARDUINO_ARCH_ESP32
+#include <HttpsWebServerESP32.h>
+#endif
 
 class HttpsWebServer{
   private:
-    SSLCert * cert;
-    HTTPSServer * secureServer;
-    
+#ifdef ARDUINO_ARCH_ESP8266
+  HttpsWebServerESP8266 https_internal;
+#elif ARDUINO_ARCH_ESP32
+  HttpsWebServerESP32 https_internal;
+#endif
+
   public:
     void setupDNS();
-    void generateSSLCert();
+    void setSSLCert();
     void registerDelayRoute();
     void registerDefaultRoute();
     boolean start();
     void loop();
-    uint64_t streamLatency = 0;
 };
 
 #endif
