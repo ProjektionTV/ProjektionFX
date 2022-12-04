@@ -18,7 +18,7 @@ CRGBArray<MAX_NUM_LEDS> leds;
 
 BeatInfo beatInfo;
 
-HttpsWebServer https;
+HttpsWebServer* https;
 
 extern int8_t nextEffectNumber;
 extern const char* nextEffectName;
@@ -47,9 +47,10 @@ void setup()
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, config.getNumLeds());
   FastLED.setMaxPowerInVoltsAndMilliamps(5, config.getMaxMilliamps());
 
-  https.setupDNS();
-  https.setSSLCert();
-  https.start();
+  https = new HttpsWebServer(); // create late, so WifiManager on will work
+  https->setupDNS();
+  https->setSSLCert();
+  https->start();
 
 #ifdef E131_ENABLED
   e131sync.setup();
@@ -64,7 +65,7 @@ void loop()
   config.connectionGuard();
   
   // Provide player and update latency
-  https.loop();
+  https->loop();
 
   // Receive the data from MQTT broker
   loopMqtt();
