@@ -27,8 +27,8 @@ extern int64_t nextEffectTimestampUs;
 extern Configuration config;
 
 void setup()
-{
-  pinMode(0, INPUT_PULLUP);
+{  
+  pinMode(0, INPUT_PULLUP); // low for config-mode; ESP32 = D0; ESP8266 = D3
   Serial.begin(115200);
   Serial.printf("\n\nProjektionFX v%d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
