@@ -26,6 +26,37 @@ extern int64_t nextEffectTimestampUs;
 
 extern Configuration config;
 
+// begin - https as background task
+#ifdef ARDUINO_ARCH_ESP32
+#define HTTPS_BACKGROUND_TASK_STACK_SIZE 10000
+
+void httpsLoop(){
+  // Provide player and update latency
+  https->loop();
+}
+
+void httpsBackgroundTask( void * parameter ){
+  Serial.println("Starting httpsBackgroundTask");
+  while (true){
+    httpsLoop();
+    delay(10);
+  }
+}
+
+void createHttpsBackgroundTask(){
+  xTaskCreatePinnedToCore(
+    httpsBackgroundTask,               /* Task function. */
+    "HTTPS",                           /* String with name of task. */
+    HTTPS_BACKGROUND_TASK_STACK_SIZE,  /* Stack size in bytes. */
+    NULL,                              /* Parameter passed as input of the task */
+    1,                                 /* Priority of the task. */
+    NULL,                              /* Task handle. */
+    0                                  /* Core - 0(Wifi) 1(Application) */
+  );
+}
+#endif
+// end - https as background task
+
 void setup()
 {  
   pinMode(0, INPUT_PULLUP); // low for config-mode; ESP32 = D0; ESP8266 = D3
@@ -43,10 +74,13 @@ void setup()
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, config.getNumLeds());
   FastLED.setMaxPowerInVoltsAndMilliamps(5, config.getMaxMilliamps());
 
-  https = new HttpsWebServer(); // create late, so WifiManager on will work
+  https = new HttpsWebServer(); // create late, so WifiManager on ESP8266 will work
   https->setupDNS();
   https->setSSLCert();
   https->start();
+#ifdef ARDUINO_ARCH_ESP32
+  createHttpsBackgroundTask();
+#endif
 
 #ifdef E131_ENABLED
   e131sync.setup();
@@ -60,8 +94,10 @@ void loop()
 {
   config.connectionGuard();
   
+#ifdef ARDUINO_ARCH_ESP8266
   // Provide player and update latency
   https->loop();
+#endif
 
   // Receive the data from MQTT broker
   loopMqtt();
