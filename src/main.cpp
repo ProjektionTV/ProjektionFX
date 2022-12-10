@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include <Ticker.h>
-// #include <ESP8266WebServer.h>
 #include <ArduinoOTA.h>
 #include <https_web_server.h>
+#include <StreamInfos.h>
 #include <ESPNtpClient.h>
 
 #include "BeatInfo.h"
@@ -18,12 +18,11 @@ CRGBArray<MAX_NUM_LEDS> leds;
 
 BeatInfo beatInfo;
 
-HttpsWebServer https;
+HttpsWebServer* https;
 
 extern int8_t nextEffectNumber;
 extern const char* nextEffectName;
 extern int64_t nextEffectTimestampUs;
-extern uint64_t streamLatency;
 
 extern Configuration config;
 
@@ -44,9 +43,10 @@ void setup()
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, config.getNumLeds());
   FastLED.setMaxPowerInVoltsAndMilliamps(5, config.getMaxMilliamps());
 
-  https.setupDNS();
-  https.generateSSLCert();
-  https.start();
+  https = new HttpsWebServer(); // create late, so WifiManager on will work
+  https->setupDNS();
+  https->setSSLCert();
+  https->start();
 
 #ifdef E131_ENABLED
   e131sync.setup();
@@ -61,7 +61,7 @@ void loop()
   config.connectionGuard();
   
   // Provide player and update latency
-  https.loop();
+  https->loop();
 
   // Receive the data from MQTT broker
   loopMqtt();
@@ -70,7 +70,7 @@ void loop()
 
   // Check time till next effect if given
   int64_t currentMicros = NTP.micros();
-  int64_t microsTillNextEffect = currentMicros - (nextEffectTimestampUs + (https.streamLatency * 1000));
+  int64_t microsTillNextEffect = currentMicros - (nextEffectTimestampUs + (streamInfos.latency * 1000));
   if (nextEffectTimestampUs > 0 && microsTillNextEffect >= 0)
   {
     Serial.printf("Set next Effect: %d\n", nextEffectNumber);
