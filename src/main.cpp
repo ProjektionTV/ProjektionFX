@@ -29,17 +29,13 @@ extern Configuration config;
 
 void setup()
 {
+  pinMode(0, INPUT_PULLUP);
   Serial.begin(115200);
   Serial.printf("\n\nProjektionFX v%d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
-  bool configPortal = false;
-  pinMode(0, INPUT);
   Serial.println("Press BootButton for ConfigPortal.");
   delay(2500);
-  if (!digitalRead(0))
-      configPortal = true;
-
-  config.setupWifiPortal("ProjektionFX", configPortal);
+  config.setupWifiPortal("ProjektionFX", !digitalRead(0));
   
   ArduinoOTA.begin();
 

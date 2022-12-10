@@ -96,16 +96,22 @@ void Configuration::setupWifiPortal(String hostName, bool configPortal)
     isClock = (strncmp(custom_checkbox_is_clock.getValue(), "T", 1) == 0);
     isMaster = (strncmp(custom_checkbox_is_master.getValue(), "T", 1) == 0);
 
-    if (mqttHost.equals("mqtt.example.com"))
+
+    if((numLeds.toInt() < 1) || (numLeds.toInt() > MAX_NUM_LEDS))
     {
-        Serial.println("Resetting WiFi Settings -> No MQTT Host set");
-        wifiManager.resetSettings();
-        ESP.restart();
+        numLeds = String(NUM_LEDS);
+        shouldSave = true;
     }
 
-    if (shouldSave)
+    if(maxMilliamps.toInt() < LED_MAX_MILLIAMP)
     {
-        Serial.println("shouldSave == true");
+        maxMilliamps = String(LED_MAX_MILLIAMP);
+        shouldSave = true;
+    }
+
+
+    if(shouldSave)
+    {
         save();
     }
 
