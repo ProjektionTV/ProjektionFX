@@ -85,17 +85,33 @@ void processNames(char *topic, byte *payload, unsigned int length)
 
 void processEffect(char *topic, byte *payload, unsigned int length)
 {
-  if (strcmp(topic, topicEffect) == 0)
-  {
-    DynamicJsonDocument doc(256);
-    deserializeJson(doc, payload, length);
-
-    nextEffectNumber = doc["number"];
-    nextEffectName = doc["name"];
-    nextEffectTimestampUs = doc["timestamp_us"];
-
-    Serial.printf("MQTT Received Effect: number=%d name=%s timestamp_us=%d \n", nextEffectNumber, nextEffectName, nextEffectTimestampUs);
+  if (strcmp(topic, topicEffect) != 0){
+    return;
   }
+
+  DynamicJsonDocument doc(256);
+  deserializeJson(doc, payload, length);
+
+  // extract new values from json
+  int8_t newNextEffectNumber = doc["number"];
+  const char* newNextEffectName = doc["name"];
+  int64_t newNextEffectTimestampUs = doc["timestamp_us"];
+
+  // skip, if the effect is allready set and "active"
+  if(nextEffectNumber == newNextEffectNumber && nextEffectTimestampUs != -1){
+    Serial.printf(
+      "MQTT SKIP received Effect: number=%d name=%s timestamp_us=%d -> this effect is already active and should trigger at %d us\n",
+      newNextEffectNumber, newNextEffectName, newNextEffectTimestampUs, nextEffectTimestampUs
+    );
+    return;
+  }
+
+  // set values
+  nextEffectNumber = newNextEffectNumber;
+  nextEffectName = newNextEffectName;
+  nextEffectTimestampUs = newNextEffectTimestampUs;
+
+  Serial.printf("MQTT Received Effect: number=%d name=%s timestamp_us=%d \n", nextEffectNumber, nextEffectName, nextEffectTimestampUs);
 }
 
 void callback(char *topic, byte *payload, unsigned int length)
