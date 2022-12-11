@@ -19,7 +19,7 @@ class EffectMovingSnake : public Effect
 public:
     static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
-        static int length = numLeds/8;
+        static int length = limitMinimum(numLeds/8, minimumLeds);
         static int oldFrame = beatInfo.animationFrame(16);
         static CRGB color = CRGB::Red;
 
@@ -39,6 +39,16 @@ public:
             leds[p] = color;
             leds[p].fadeToBlackBy((length - i) * (255. / length));
         }
+    }
+
+private:
+    const static int minimumLeds = 2;
+
+    static int limitMinimum(int value, int minimumLimit){
+        if(value < minimumLimit){
+            return minimumLimit;
+        }
+        return value;
     }
 };
 
