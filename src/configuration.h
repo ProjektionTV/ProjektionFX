@@ -27,6 +27,7 @@ public:
     const char *getMQTTPassword() { return mqttPassword.c_str(); };
     uint16_t getNumLeds() {return numLeds.toInt();};
     uint16_t getMaxMilliamps() {return maxMilliamps.toInt();};
+    uint16_t getUniverse() {return universe.toInt();};
 
 private:
     String mqttHost = MQTT_HOST;
@@ -34,6 +35,7 @@ private:
     String mqttPassword = MQTT_PASSWORD;
     String numLeds = String(NUM_LEDS);
     String maxMilliamps = String(LED_MAX_MILLIAMP);
+    String universe = String(UNIVERSE);
 
     bool isClock = false;
     bool isMaster = false;

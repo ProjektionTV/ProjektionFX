@@ -21,6 +21,7 @@
 #define LED_MAX_MILLIAMP 500
 
 #define E131_ENABLED
+#define UNIVERSE 1
 
 #define DEBUG_SERIAL true
 #endif

@@ -49,7 +49,7 @@ void setup()
   https->start();
 
 #ifdef E131_ENABLED
-  e131sync.setup();
+  e131sync.setup(config.getUniverse());
 #endif
 
   NTP.setTimeZone (TZ_Etc_GMTp1);

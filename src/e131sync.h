@@ -7,15 +7,17 @@ E131 e131;
 class E131Sync
 {
 private:
-    const uint16_t universeTX = 1;
+    uint16_t startUniverse = 1;
     uint8_t DMXsequence = 1;
     long previousMillis = 0;
 
 public:
-    void setup()
+    void setup(uint16_t universe)
     {
+        startUniverse = universe;
+
         for (int universe = 0; universe <= ceil(config.getNumLeds() / 170); universe++){
-            e131.begin(E131_MULTICAST, universe + universeTX);
+            e131.begin(E131_MULTICAST, universe + startUniverse);
         }
         
     }
@@ -57,7 +59,7 @@ public:
                     }
                 }
 
-                e131.sendPacket(universe + universeTX);
+                e131.sendPacket(universe + startUniverse);
             }
 
             // while (ledsLeft > 0)

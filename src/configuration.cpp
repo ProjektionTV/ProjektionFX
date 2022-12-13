@@ -44,6 +44,9 @@ void Configuration::setupWifiPortal(String hostName, bool configPortal)
     WiFiManagerParameter custom_max_milliamps("max_milliamps", "max Milliamps", maxMilliamps.c_str(), 5);
     wifiManager.addParameter(&custom_max_milliamps);
 
+    WiFiManagerParameter custom_universe("universe", "Universe", universe.c_str(), 5);
+    wifiManager.addParameter(&custom_universe);
+
     char _custom_checkbox_clock[32] = "type=\"checkbox\"";
 
     if(isClock)
@@ -93,6 +96,7 @@ void Configuration::setupWifiPortal(String hostName, bool configPortal)
     mqttPassword = custom_mqtt_password.getValue();
     numLeds = custom_num_leds.getValue();
     maxMilliamps = custom_max_milliamps.getValue();
+    universe = custom_universe.getValue();
     isClock = (strncmp(custom_checkbox_is_clock.getValue(), "T", 1) == 0);
     isMaster = (strncmp(custom_checkbox_is_master.getValue(), "T", 1) == 0);
 
@@ -109,6 +113,11 @@ void Configuration::setupWifiPortal(String hostName, bool configPortal)
         shouldSave = true;
     }
 
+    if((universe.toInt() < 1) || (universe.toInt() > 255))
+    {
+        universe = String(UNIVERSE);
+        shouldSave = true;
+    }
 
     if(shouldSave)
     {
@@ -158,6 +167,7 @@ void Configuration::save()
     json["mqtt_password"] = mqttPassword;
     json["num_leds"] = numLeds;
     json["max_milliamps"] = maxMilliamps;
+    json["universe"] = universe;
     json["is_clock"] = isClock;
     json["is_master"] = isMaster;
 
@@ -223,6 +233,7 @@ void Configuration::setupSPIFF()
                     String password = json["mqtt_password"];
                     String numleds = json["num_leds"];
                     String maxmilliamps = json["max_milliamps"];
+                    String strUniverse =  json["universe"];
                     bool isclock = json["is_clock"];
                     bool ismaster = json["is_master"];
 
@@ -231,6 +242,7 @@ void Configuration::setupSPIFF()
                     mqttPassword = password;
                     numLeds = numleds;
                     maxMilliamps = maxmilliamps;
+                    universe = strUniverse;
                     isClock = isclock;
                     isMaster = ismaster;
 
@@ -240,6 +252,7 @@ void Configuration::setupSPIFF()
                     Serial.printf(" mqtt_password:\t <HIDDEN>\n");
                     Serial.printf(" num_leds:\t %s\n", numLeds.c_str());
                     Serial.printf(" max_milliamps:\t %s\n", maxMilliamps.c_str());
+                    Serial.printf(" universe:\t %s\n", universe.c_str());
                     Serial.printf(" is_clock:\t %d\n", isClock);
                     Serial.printf(" is_master:\t %d\n", isMaster);
                 }
