@@ -5,7 +5,6 @@
 
 class EffectSmashingDots : public Effect
 {
-private:
 public:
     static void run(BeatInfo& beatInfo, CRGBSet leds, int numLeds)
     {
@@ -16,7 +15,7 @@ public:
         leds = CRGB::Black;
 
         // width of the bars
-        int width = numLeds / 10;
+        int width = limitMinimum(numLeds / 10, minimumLedsForBar);
 
         // brightness of the dots
         int ramp = map(frame < 500 ? 499 - frame : 999 - frame, 0, 499, 8, 16); // negative sawtooth for flashing
@@ -34,12 +33,23 @@ public:
         leds(numLeds*3/4 - barRange + barOffset, numLeds*3/4 + barOffset - 1) = barColor; // bar2
 
         // draw the dots
-        int dotRange = numLeds/4 - width - 1;
+        int dotRange = limitMinimum(numLeds/4, minimumForDotRange) - width - 1;
         int dotOffset = map(frame < 500 ? frame : 999 - frame, 0, 499, 0, dotRange); // up and down ramp
         leds[dotOffset] = dotColor; // dot1
         leds[numLeds/2 - dotRange + dotOffset - 1] = dotColor; // dot2
         leds[numLeds/2 + dotRange - dotOffset] = dotColor; // dot3
         leds[numLeds - dotOffset - 1] = dotColor; // dot4
+    }
+
+private:
+    const static int minimumLedsForBar = 2;
+    const static int minimumForDotRange = 4;
+
+    static int limitMinimum(int value, int minimumLimit){
+        if(value < minimumLimit){
+            return minimumLimit;
+        }
+        return value;
     }
 };
 

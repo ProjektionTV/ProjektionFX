@@ -12,7 +12,7 @@ public:
         const static int halfLedCount = numLeds / 2;
 
         // Je weiter aussen der Effekt ist desto weniger LEDs sollen leuchten.
-        const static int achtel = numLeds / 8;
+        const static int achtel = limitMinimum(numLeds / 8, minimumLeds);
 
         // in jedem Durchlauf alle LEDs werden etwas dunkler
         leds.fadeToBlackBy(255);
@@ -32,6 +32,16 @@ public:
                 leds[halfLedCount - l] = CHSV(hue, 255, 128);
             }
         }
+    }
+
+private:
+    const static int minimumLeds = 6;
+
+    static int limitMinimum(int value, int minimumLimit){
+        if(value < minimumLimit){
+            return minimumLimit;
+        }
+        return value;
     }
 };
 
